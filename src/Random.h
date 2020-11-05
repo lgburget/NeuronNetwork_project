@@ -24,6 +24,7 @@ public:
   These functions either return a single number 
   or fill a given container with random numbers according to the specified distribution. 
   The additional parameters are the standard parameters of these distributions.
+  The discrete distribution is to be used to determine the type of the Neurons.
 */
 ///@{
     double uniform_double(double lower=0, double upper=1);
@@ -36,6 +37,7 @@ public:
     template<class T> void exponential(T&, const double rate=1);
     int poisson(double mean=1);
     template<class T> void poisson(T&, double mean=1);
+    int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
 ///@}
 
 private:
