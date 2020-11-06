@@ -20,7 +20,7 @@ public:
 	Neuron();
 ///@}
 	void equation();
-	bool firing() const {return (pot_ > _Connectivity_);}
+	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 /*! @name Setters/Getters
  */
 ///@{
