@@ -12,7 +12,7 @@ Simulation(int, char **);
 ~Simulation();
 
 private:
-	Network network;
+	//Network network;
 
 
 };
