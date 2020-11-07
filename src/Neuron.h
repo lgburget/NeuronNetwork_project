@@ -1,6 +1,7 @@
 #pragma once
 
 #include "constants.h"
+#include "Random.h"
 
 /*! \class Neuron
  * The Neuron class creates a neuron which has four cellular properties (a, b, c, d), a quality (excitatory or inhibitory)
@@ -20,6 +21,7 @@ public:
  */
 ///@{
 	Neuron();
+	Neuron(bool excit);
 ///@}
 	void equation();
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
