@@ -2,6 +2,8 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#pragma once
+
 #include <map>
 #include <set>
 #include <stdexcept>

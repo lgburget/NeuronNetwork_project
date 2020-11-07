@@ -1,5 +1,4 @@
-#ifndef RANDOM_H
-#define RANDOM_H
+#pragma once
 
 #include <random>
 #include <vector>
@@ -73,4 +72,3 @@ template<class T> void RandomNumbers::poisson(T &res, double mean) {
 
 extern RandomNumbers *_RNG;
 
-#endif //RANDOM_H
