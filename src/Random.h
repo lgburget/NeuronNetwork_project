@@ -39,6 +39,13 @@ public:
     int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
 ///@}
 
+/*! @name Auxiliary function
+ * This takes a vector of indices and re-orders it randomly.
+ */
+///@{
+    void shuffle(std::vector<size_t> &_v) {std::shuffle(_v.begin(), _v.end(), rng);}
+///@}
+
 private:
     std::mt19937 rng;
     long int seed;

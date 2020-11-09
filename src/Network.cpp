@@ -16,12 +16,33 @@ Network::Network(int number, double prop_excitatory, double connectivity, double
 		neurons.push_back(n);
 	}
 	
-	// il faudra que j'ajoute la création des liens grace a une fonction add_link: 
-	// nombre de lien par neurone (Pois(connectivity)), 
-	// choix aléatoire des neurones
-	// intensité du lien
+	for (size_t i(0); i<neurons.size(); ++i) {
+		
+	}
+	
+	random_connect(connectivity, intensity);
 }
 
+void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
+{
+	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;
+}
+
+void Network::random_connect(const double& lambda, const double &i)
+{
+	int link_number;
+	double intensity;
+	std::vector<size_t> index;
+	for (size_t k(0); k<neurons.size(); ++k) index[k] = k;
+	for (size_t j(0); j<neurons.size(); ++j) {
+		_RNG->shuffle(index);
+		link_number = _RNG->poisson(lambda);
+		for (size_t m(0); m<link_number; ++m) {	
+			intensity = _RNG->uniform_double(0, 2*i);
+			add_link(j,index[m],intensity);
+		}
+	}
+}
 
 std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 {
