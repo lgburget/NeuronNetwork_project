@@ -1,7 +1,7 @@
 #include "Network.h"
 #include <cmath>
 
-Network::Network() 
+Network::Network()
 {}
 
 Network::Network(int number, double prop_excitatory, double connectivity, double intensity)
@@ -15,11 +15,11 @@ Network::Network(int number, double prop_excitatory, double connectivity, double
 		Neuron n(false);
 		neurons.push_back(n);
 	}
-	
+
 	for (size_t i(0); i<neurons.size(); ++i) {
-		
+
 	}
-	
+
 	random_connect(connectivity, intensity);
 }
 
@@ -37,12 +37,21 @@ void Network::random_connect(const double& lambda, const double &i)
 	for (size_t j(0); j<neurons.size(); ++j) {
 		_RNG->shuffle(index);
 		link_number = _RNG->poisson(lambda);
-		for (size_t m(0); m<link_number; ++m) {	
+		for (size_t m(0); m<link_number; ++m) {
 			intensity = _RNG->uniform_double(0, 2*i);
 			add_link(j,index[m],intensity);
 		}
 	}
 }
+
+
+bool Network::neuronfiring (Neuron neuron_)
+{
+			if (neuron_.firing()) {return true;}
+		else  {	return false ;}
+}
+
+
 
 std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 {
@@ -52,7 +61,7 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 			neighbours.push_back(std::make_pair(it->first.second, it->second));
 		}
 	}
-	
+
 	return neighbours;
 }
 
@@ -62,16 +71,17 @@ double Network::total_current(const size_t &n)
 	double noise = _RNG->normal(0,1);
 	if (neurons[n].get_params().excit) current = 5*noise;
 	else current = 2*noise;
-	
+
 	for (auto neighbour: find_neighbours(n)) {
 		if (neurons[neighbour.first].firing()) {
 			if (neurons[neighbour.first].get_params().excit) current+=neighbour.second /2;
 			else current-=neighbour.second /2;
 		}
 	}
-	
+
 	return current;
 }
+
 
 void Network::update()
 {
