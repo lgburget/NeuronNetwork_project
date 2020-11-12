@@ -9,10 +9,18 @@
  *
  * Simulation results are printed to screen or file with the helper functions \ref header (prints a header a the top of data columns, which represent time) and \ref 
  * print (prints, for every neuron, for every step of the simulation a 1 if the neuron is in firing state and 0 if not).
- *
- * A Simulation is made of a \ref Network.
- *
+ * 
  * Time advances from 0 until it reaches \ref endtime.
+ * 
+ * A Simulation is made of a \ref Network.
+ * Simulation parameters:
+ * - \ref endtime : total number of time-steps,
+ * - \ref number : total number of neurons,
+ * - \ref connectivity : average connectivity of a neuron,
+ * - \ref intensity : average intensity of connections, 
+ * - \ref prop_exc : fraction of excitatory neurons in the network,
+ * - \ref outfile : output file
+
 */
 
 class Simulation {
@@ -40,7 +48,9 @@ public:
 
 
 private:
-		Network network;
-  		double endtime;
+		Network* network;
+  		int endtime;
+  		size_t number;
+  		double prop_exc, connectivity, intensity;
 		std::ofstream outfile;
 };
