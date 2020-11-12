@@ -28,6 +28,11 @@ public:
 ///@}
 
 /*!
+  Provide access to the set of \ref Neuron.
+*/
+	std::vector<Neuron> get_neurons() const { return neurons ; };
+
+/*!
  * Creates a new link in the map \ref links.
  * \param n_r (size_t): receiving neuron,
  * \param n_s (size_t): sending neuron,
@@ -36,7 +41,7 @@ public:
     void add_link(const size_t& n_r, const size_t& n_s, double i);
 /*!
  * Creates all the random links of the network.
- * Each neuron will expect to receive the inputs of n other neurons, randomly choosed using
+ * Each \ref Neuron will expect to receive the inputs of n other neurons, randomly choosed using
  * a poisson distribution with mean \p lambda.
  * The intensity of the link is choosed using uniform distribution between 0 and 2* \p i.
  * The sending neurons will be picked at random within \ref neurons, but as a \ref Neuron can only send
@@ -51,6 +56,16 @@ public:
  *\return a vector of pair {neuron index, link intensity}.
 */
 	std::vector<std::pair<size_t, double>> find_neighbours(const size_t &n);
+	
+/*!
+ *Tests if the neuron in parameter is firing
+*/
+	bool neuron_firing (Neuron neuron_);
+	
+/*!
+ *Tests if the \ref Neuron \p n is already sending signal to another one (a neuron can only send to a unique other neuron)
+*/
+	bool is_sending(const size_t& n);
 
 /*!
  *Calculates the total synaptic current received by neuron \p n.
@@ -61,12 +76,10 @@ public:
 
 /*!
   Performs one time-step of the simulation.
- */
+*/
 	void update();
 
-	bool neuronfiring (Neuron neuron_);
 
-  std::vector<Neuron> get_neurons() const { return neurons ; };
 
 private:
 	std::vector<Neuron> neurons;

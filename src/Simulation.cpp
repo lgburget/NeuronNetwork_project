@@ -5,7 +5,7 @@ Simulation::Simulation(int argc, char **argv) {
         TCLAP::CmdLine cmd("Neuron Network simulation");
         TCLAP::ValueArg<int> neuron("n", "neuron", "Number of Neuron", false, _Numbers_ , "int");
         cmd.add(neuron);
-        TCLAP::ValueArg<double> prop_e("Pe", "prop_e", "Proportion of Excitatory Neuron", false, _Proportion_Excitatory_, "double");
+        TCLAP::ValueArg<double> prop_e("P", "prop_e", "Proportion of Excitatory Neuron", false, _Proportion_Excitatory_, "double");
         cmd.add(prop_e);
         TCLAP::ValueArg<double> time("T", "time", "Simulation Time", false, _Simulation_Time_ , "double");
         cmd.add(time);
@@ -48,7 +48,7 @@ void Simulation::print(){
 
       for (auto n : network.get_neurons()) {
         for(double time(0); time<=endtime ; time++){
-            if (network.neuronfiring(n)){
+            if (network.neuron_firing(n)){
                 *outstr << "\t" << '1' ;
             } else {
                 *outstr << "\t" << '0' ;
@@ -56,6 +56,10 @@ void Simulation::print(){
           }
           *outstr << std::endl;
       }
+}
+
+void Simulation::run() {
+	
 }
 
 Simulation::~Simulation() {

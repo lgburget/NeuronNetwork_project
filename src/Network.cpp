@@ -7,17 +7,13 @@ Network::Network()
 Network::Network(int number, double prop_excitatory, double connectivity, double intensity)
 {
 	int nb_excitatory = (int)floor(number*prop_excitatory);
-	for (size_t i(0); i<nb_excitatory; ++i) {
+	for (int i(0); i<nb_excitatory; ++i) {
 		Neuron n(true);
 		neurons.push_back(n);
 	}
-	for (size_t i(nb_excitatory); i<number; ++i) {
+	for (int i(nb_excitatory); i<number; ++i) {
 		Neuron n(false);
 		neurons.push_back(n);
-	}
-
-	for (size_t i(0); i<neurons.size(); ++i) {
-
 	}
 
 	random_connect(connectivity, intensity);
@@ -37,20 +33,12 @@ void Network::random_connect(const double& lambda, const double &i)
 	for (size_t j(0); j<neurons.size(); ++j) {
 		_RNG->shuffle(index);
 		link_number = _RNG->poisson(lambda);
-		for (size_t m(0); m<link_number; ++m) {
+		for (int m(0); m<link_number; ++m) {
 			intensity = _RNG->uniform_double(0, 2*i);
-			add_link(j,index[m],intensity);
+			if (not this->is_sending(index[m])) add_link(j,index[m],intensity);
 		}
 	}
 }
-
-
-bool Network::neuronfiring (Neuron neuron_)
-{
-			if (neuron_.firing()) {return true;}
-		else  {	return false ;}
-}
-
 
 
 std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
@@ -65,6 +53,22 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 	return neighbours;
 }
 
+
+bool Network::neuron_firing (Neuron neuron_)
+{
+			if (neuron_.firing()) {return true;}
+		else  {	return false ;}
+}
+
+bool Network::is_sending(const size_t& n)
+{
+	for (size_t i(0); i<neurons.size(); ++i) {
+		if (links.count({i,n}) == 1) return true;
+	}
+	return false;
+}
+
+
 double Network::total_current(const size_t &n)
 {
 	double current;
@@ -75,7 +79,7 @@ double Network::total_current(const size_t &n)
 	for (auto neighbour: find_neighbours(n)) {
 		if (neurons[neighbour.first].firing()) {
 			if (neurons[neighbour.first].get_params().excit) current+=neighbour.second /2;
-			else current-=neighbour.second /2;
+			else current-=neighbour.second;
 		}
 	}
 
