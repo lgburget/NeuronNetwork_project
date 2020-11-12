@@ -1,8 +1,5 @@
 #include "Neuron.h"
 
-Neuron::Neuron()
-{};
-
 Neuron::Neuron(bool excit) : curr_(0.0)
 {
 	double r = _RNG->uniform_double(0,1);

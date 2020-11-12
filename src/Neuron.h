@@ -18,13 +18,18 @@ struct Neuron_parameters {double a, b, c, d;
 class Neuron{
 public:
 /*! @name Initializing
+ * A neuron is initialized using its quality (excitatory or inhibitory), parameters are a combination of constants and uniform distributions. Membrane potential and recovery parameters don't depend on the quality of the neuron.
  */
 ///@{
-	Neuron();
 	Neuron(bool excit);
 ///@}
+/*! @name Neuron states
+ * Equation calculates differential equations based on a simple model of spiking neurons.
+ */
+///@{
 	void equation();
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
+///@}
 /*! @name Setters/Getters
  */
 ///@{
@@ -38,6 +43,16 @@ public:
 	double get_current() const {return curr_;}
 ///@}
 private:
+/*! @name Cellular properties
+ * Parameters are regrouped in a data structure called \ref Neuron_parameters. They are initialized at the start of the simulation and are constant.
+ */
+///@{
 	Neuron_parameters params_;
+///@}
+/*! @name State variables
+ * State variables change after every step of the simulation.
+ */
+///@{
 	double pot_, rec_, curr_;
+///@}
 };
