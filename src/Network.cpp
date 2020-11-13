@@ -54,13 +54,13 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 }
 
 
-bool Network::neuron_firing (Neuron neuron_)
+bool Network::neuron_firing (const Neuron &neuron_) const
 {
 			if (neuron_.firing()) {return true;}
 		else  {	return false ;}
 }
 
-bool Network::is_sending(const size_t& n)
+bool Network::is_sending(const size_t& n) const
 {
 	for (size_t i(0); i<neurons.size(); ++i) {
 		if (links.count({i,n}) == 1) return true;

@@ -60,12 +60,12 @@ public:
 /*!
  *Tests if the neuron in parameter is firing
 */
-	bool neuron_firing (Neuron neuron_);
+	bool neuron_firing (const Neuron &neuron_) const;
 	
 /*!
  *Tests if the \ref Neuron \p n is already sending signal to another one (a neuron can only send to a unique other neuron)
 */
-	bool is_sending(const size_t& n);
+	bool is_sending(const size_t& n) const;
 
 /*!
  *Calculates the total synaptic current received by neuron \p n.
