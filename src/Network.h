@@ -75,7 +75,7 @@ public:
 	double total_current(const size_t &n);
 
 /*!
-  Performs one time-step of the simulation.
+  In order to perform one time-step of the simulation, it updates twice the potential and once the recovery. 
 */
 	void update();
 

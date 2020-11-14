@@ -6,9 +6,10 @@ RandomNumbers *_RNG;
 int main(int argc, char **argv) {
 	_RNG = new RandomNumbers;
 	try{
-	Simulation s(argc, argv);
-	s.run();
-	}catch(SimulError &e){
+		Simulation s(argc, argv);
+		s.header();
+		s.run();
+	} catch(SimulError &e) {
 		std::cerr << e.what() << std::endl;
 		return e.value();
 	}

@@ -89,8 +89,15 @@ double Network::total_current(const size_t &n)
 
 void Network::update()
 {
+	// je pense que ya un soucis au niveau du moment ou le test firing est fait mais je sais pas comment faire autrement
 	for (size_t i(0); i<neurons.size(); ++i) {
-		neurons[i].set_current(this->total_current(i));
-		neurons[i].equation();
+			neurons[i].set_current(this->total_current(i));
+			neurons[i].update_pot();
+			//neurons[i].equation();
+	}
+	for (size_t i(0); i<neurons.size(); ++i) {
+			neurons[i].set_current(this->total_current(i));
+			neurons[i].update_pot();
+			neurons[i].update_rec();
 	}
 }

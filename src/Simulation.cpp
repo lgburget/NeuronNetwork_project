@@ -49,7 +49,7 @@ void Simulation::header()
 
 void Simulation::print()
 {
-      header();
+      // header(); 
 
       std::ostream *outstr = &std::cout;
       if (outfile.is_open()) outstr = &outfile;
@@ -68,7 +68,10 @@ void Simulation::print()
 
 void Simulation::run() 
 {
-	 
+	for (int i(0); i<endtime; ++i) {
+		network->update();
+		this->print();
+	}
 }
 
 Simulation::~Simulation() 

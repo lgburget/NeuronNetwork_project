@@ -24,10 +24,14 @@ public:
 	Neuron(bool excit);
 ///@}
 /*! @name Neuron states
- * Equation calculates differential equations based on a simple model of spiking neurons.
+ * Potentiel \ref pot_ is updated two times while recovery variable \ref rec_ is only updated once. Therefore there is two separated methods to update them.
+ * \ref update_rec() also tests if the \ref Neuron is \ref firing(). 
  */
 ///@{
-	void equation();
+	// Equation calculates differential equations based on a simple model of spiking neurons.
+	//void equation();
+	void update_pot();
+	void update_rec();
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 ///@}
 /*! @name Setters/Getters
