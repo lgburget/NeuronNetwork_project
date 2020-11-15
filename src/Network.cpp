@@ -21,6 +21,7 @@ Network::Network(int number, double prop_excitatory, double connectivity, double
 
 void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
 {
+	if(n_r == n_s) return;
 	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;
 }
 
@@ -28,7 +29,7 @@ void Network::random_connect(const double& lambda, const double &i)
 {
 	int link_number;
 	double intensity;
-	std::vector<size_t> index;
+	std::vector<size_t> index(neurons.size());
 	for (size_t k(0); k<neurons.size(); ++k) index[k] = k;
 	for (size_t j(0); j<neurons.size(); ++j) {
 		_RNG->shuffle(index);

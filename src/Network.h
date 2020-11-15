@@ -33,6 +33,10 @@ public:
 	std::vector<Neuron> get_neurons() const { return neurons ; };
 
 /*!
+  Provides access to the set of \ref links.
+ */
+	Link get_links() const { return links ; };
+/*!
  * Creates a new link in the map \ref links.
  * \param n_r (size_t): receiving neuron,
  * \param n_s (size_t): sending neuron,
