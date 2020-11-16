@@ -55,13 +55,13 @@ void Simulation::print()
       if (outfile.is_open()) outstr = &outfile;
 
       for (auto n : network->get_neurons()) {
-        for(int time(0); time<=endtime ; time++){
+       // for(int time(0); time<=endtime ; time++){
             if (network->neuron_firing(n)){
                 *outstr << "\t" << '1' ;
             } else {
                 *outstr << "\t" << '0' ;
             }
-          }
+       //   }
           *outstr << std::endl;
       }
 }
