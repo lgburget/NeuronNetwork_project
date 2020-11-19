@@ -42,7 +42,7 @@ public:
 */
 ///@{
 		void header();
-		void print();
+		void print(const int& i);
 		void run();
 ///@}
 

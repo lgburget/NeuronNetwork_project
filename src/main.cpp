@@ -17,4 +17,3 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-// pas de gestion d'erreur ou de lien avec simulation pour l'instant, juste utile pour lancer le programme et les tests
