@@ -31,7 +31,7 @@ TEST(Random, distributions) {
 }
 
 TEST(Network, Initialze) {
-	Network net1(1000, 1, 5, 1);
+	Network net1(100, 1, 5, 1);
 	std::vector<Neuron> neurons1 = net1.get_neurons();
 	for(auto n : neurons1)
 	{
@@ -41,7 +41,7 @@ TEST(Network, Initialze) {
 		EXPECT_EQ(0.2, param.b);
 		EXPECT_EQ(-13, n.get_recovery());
 	}
-	Network net2(1000, 0, 5, 1);
+	Network net2(100, 0, 5, 1);
 	std::vector<Neuron> neurons2 = net2.get_neurons();
 	for(auto n : neurons2)
 	{
@@ -66,11 +66,10 @@ TEST(Network, addlink) {
 
 
 TEST(Network, linking) {
-	Network net(1000, 0.5, 5, 1);
+	Network net(100, 0.5, 5, 1);
 	std::vector<Neuron> nn = net.get_neurons();
-	double mean = (double)net.get_links().size()/1000;
-	EXPECT_NEAR(mean, 5.0, 1e-1);	
-	// problème 
+	double mean = (double)net.get_links().size()/100;
+	EXPECT_NEAR(mean, 5.0, 1.0);	
 }
 
 TEST(Network, Neighbours) {
@@ -85,6 +84,18 @@ TEST(Network, Neighbours) {
 	EXPECT_EQ(neighbours, expected_neighbours);
 }
 
+TEST(Network, potential) {
+	Network net(3, 1, 0, 1);
+	std::vector<Neuron> nn = net.get_neurons();
+	net.add_link(0, 1, 1);
+	net.add_link(0, 2, 1);
+	net.set_neuron_potential(1, 35.0);
+	net.set_neuron_potential(2, 35.0);
+	double i = net.total_current(0);
+	EXPECT_GE(i, -4);
+    EXPECT_LT(i, 6);
+	
+}
 
 TEST(Neuron, firing) {
 	Neuron n1(false);
@@ -96,7 +107,6 @@ TEST(Neuron, firing) {
 	
 	n1.update_rec();
 	EXPECT_EQ(n1.get_params().c, n1.get_potential());
-	
 }
 
 

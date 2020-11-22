@@ -31,7 +31,12 @@ public:
   Provide access to the set of \ref Neuron.
 */
 	std::vector<Neuron> get_neurons() const { return neurons ; };
-
+	
+	
+/*!
+  Allows the test program to modify the potential of a neuron in the network
+ */
+	void set_neuron_potential(const size_t &n, const double& pot) { neurons[n].set_potential(pot); }
 /*!
   Provides access to the set of \ref links.
  */

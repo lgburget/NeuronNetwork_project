@@ -46,7 +46,7 @@ void Network::random_connect(const double& lambda, const double &i)
 		for (size_t m(0); m<stop; ++m) {
 			intensity = _RNG->uniform_double(0, 2*i);                           // intensity of connection is picked at random
 			if (not this->is_sending(index[m])) add_link(j,index[m],intensity); // check that neuron[m] doesn't already send a signal to an other neuron to add link
-			else if (stop<neurons.size()) ++stop; 			                    // if the neuron[m] already send a signal to an other neuron, we will choose the next neuron so we shift the stop value
+			else ++stop; 			                    // if the neuron[m] already send a signal to an other neuron, we will choose the next neuron so we shift the stop value
 		}
 	}
 }
@@ -84,19 +84,23 @@ bool Network::is_sending(const size_t& n) const
 double Network::total_current(const size_t &n)
 {
 	double current;
-	double noise = _RNG->normal(0,1);															// external noise is picked at random
-	if (neurons[n].get_params().excit) current = 5*noise;										
-	else current = 2*noise;
+	double noise = _RNG->normal(0,1);								// external noise is picked at random
+	if (neurons[n].get_params().excit) current = 5.0*noise;										
+	else current = 2.0*noise;
 
 	for (auto neighbour: find_neighbours(n)) {
-		if (neurons[neighbour.first].firing()) {												// check if neighbour is firing and thus sending a signal to neuron n
-			if (neurons[neighbour.first].get_params().excit) current+=neighbour.second /2;		// if firing and excitatory -> add half of the intensity of current
-			else current-=neighbour.second;														// if firing and inhibitory -> substract the intensity of the current
+		if (neurons[neighbour.first].firing()) {						// check if neighbour is firing and thus sending a signal to neuron n										
+			if (neurons[neighbour.first].get_params().excit) {
+				current+= (double)links[{n, neighbour.first}]*0.5;		// if firing and excitatory -> add half of the intensity of current
+				}		
+			else current-=links[{neighbour.second, neighbour.first}];	// if firing and inhibitory -> substract the intensity of the current
 		}
 	}
 
 	return current;
 }
+
+
 
 
 void Network::update()
