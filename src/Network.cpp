@@ -23,8 +23,9 @@ Network::Network(int number, double prop_excitatory, double connectivity, double
 
 void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
 {
-	if(n_r == n_s) return;                                             // check that the two neurons are not actually the same neuron
-	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;			   // check that the map doesn't already contains a link for these neurons
+	if(n_r==n_s) return;                                            // check that the two neurons are not actually the same neuron
+	if((n_r or n_s)>neurons.size()) return;							// check that the neurons exist
+	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;			// check that the map doesn't already contains a link for these neurons
 }
 
 void Network::random_connect(const double& lambda, const double &i)
@@ -46,7 +47,7 @@ void Network::random_connect(const double& lambda, const double &i)
 		for (size_t m(0); m<stop; ++m) {
 			intensity = _RNG->uniform_double(0, 2*i);                           // intensity of connection is picked at random
 			if (not this->is_sending(index[m])) add_link(j,index[m],intensity); // check that neuron[m] doesn't already send a signal to an other neuron to add link
-			else ++stop; 			                    // if the neuron[m] already send a signal to an other neuron, we will choose the next neuron so we shift the stop value
+			else ++stop; 			                    						// if the neuron[m] already send a signal to an other neuron, we will choose the next neuron so we shift the stop value
 		}
 	}
 }
