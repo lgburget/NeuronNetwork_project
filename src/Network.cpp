@@ -1,5 +1,4 @@
 #include "Network.h"
-#include <cmath>
 
 Network::Network()
 {}
@@ -69,8 +68,7 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 
 bool Network::neuron_firing (const Neuron &neuron_) const
 {
-		if (neuron_.firing()) return true;
-		else return false;
+		return neuron_.firing();
 }
 
 bool Network::is_sending(const size_t& n) const
@@ -84,17 +82,17 @@ bool Network::is_sending(const size_t& n) const
 
 double Network::total_current(const size_t &n)
 {
-	double current;
-	double noise = _RNG->normal(0,1);								// external noise is picked at random
+	double current(0.0);
+	double noise = _RNG->normal(0,1);								    // external noise is picked at random
 	if (neurons[n].get_params().excit) current = 5.0*noise;										
 	else current = 2.0*noise;
 
 	for (auto neighbour: find_neighbours(n)) {
-		if (neurons[neighbour.first].firing()) {						// check if neighbour is firing and thus sending a signal to neuron n										
+		if (neurons[neighbour.first].firing()) {					    // check if neighbour is firing and thus sending a signal to neuron n										
 			if (neurons[neighbour.first].get_params().excit) {
-				current+= (double)links[{n, neighbour.first}]*0.5;		// if firing and excitatory -> add half of the intensity of current
+					current+= (double)links[{n, neighbour.first}]*0.5;	// if firing and excitatory -> add half of the intensity of current
 				}		
-			else current-=links[{neighbour.second, neighbour.first}];	// if firing and inhibitory -> substract the intensity of the current
+			else current-=links[{n, neighbour.first}];					// if firing and inhibitory -> substract the intensity of the current
 		}
 	}
 
@@ -105,16 +103,27 @@ double Network::total_current(const size_t &n)
 
 
 void Network::update()
-{
-	// First loop to update just the potential 
+{ 
 	for (size_t i(0); i<neurons.size(); ++i) {
+		if (neurons[i].firing()) {									   // In case neuron is firing parameters are reset
+			neurons[i].update_if_firing();                              
+		} else {													   // otherwise, potential is updated twice and recovery once
+			// first loop, only potential is updated
 			neurons[i].set_current(this->total_current(i));
 			neurons[i].update_pot();
-	}
-	// Second loop to update both potential and recovery
-	for (size_t i(0); i<neurons.size(); ++i) {
-			neurons[i].set_current(this->total_current(i));
+			// second loop, both potential and recovery are updated
+			//neurons[i].set_current(this->total_current(i));
 			neurons[i].update_pot();
 			neurons[i].update_rec();
+		}
 	}
+	
+	
+	/*// Second loop to update both potential and recovery
+	for (size_t i(0); i<neurons.size(); ++i) {
+		neurons[i].set_current(this->total_current(i));
+		neurons[i].update_pot();
+		neurons[i].update_rec();
+	}
+	*/
 }

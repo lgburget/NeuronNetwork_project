@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Random.h"
 #include "Network.h"
-#include "constants.h"
 
 /*!
  * The Simulation class is the main class in this program. It constructs the neuron \ref Network according to user-specified parameters, and \ref run the simulation.

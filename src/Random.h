@@ -23,7 +23,6 @@ public:
   These functions either return a single number 
   or fill a given container with random numbers according to the specified distribution. 
   The additional parameters are the standard parameters of these distributions.
-  The discrete distribution is to be used to determine the type of the Neurons.
 */
 ///@{
     double uniform_double(double lower=0, double upper=1);
@@ -32,11 +31,11 @@ public:
     template<class T> void uniform_int(T&, int lower=0, int upper=100);
     double normal(double mean=0, double sd=1);
     template<class T> void normal(T&, double mean=0, double sd=1);
-    double exponential(const double rate=1);
-    template<class T> void exponential(T&, const double rate=1);
+    //double exponential(const double rate=1);
+    //template<class T> void exponential(T&, const double rate=1);
     int poisson(double mean=1);
     template<class T> void poisson(T&, double mean=1);
-    int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
+    //int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
 ///@}
 
 /*! @name Auxiliary function
@@ -67,10 +66,10 @@ template<class T> void RandomNumbers::normal(T &res, double mean, double sd) {
     for (auto I=res.begin(); I!=res.end(); I++) *I = norm(rng);
 }
 
-template<class T> void RandomNumbers::exponential(T &res, const double rate) {
+/*template<class T> void RandomNumbers::exponential(T &res, const double rate) {
 	std::exponential_distribution<> exp(rate);
 	for (auto I=res.begin(); I!=res.end(); I++) *I = exp(rng);
- }
+ }*/
 
 template<class T> void RandomNumbers::poisson(T &res, double mean) {
     std::poisson_distribution<> poi(mean);

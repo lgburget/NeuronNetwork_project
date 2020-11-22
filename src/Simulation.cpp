@@ -47,8 +47,8 @@ void Simulation::header()
 {
       std::ostream *outstr = &std::cout;
       if (outfile.is_open()) outstr = &outfile;
-      *outstr << "neuron" << std::endl << "time";   
-      for (size_t n=1; n<=number; n++)
+      *outstr << "neuron" << std::endl << "time";   // display of the legend of the table
+      for (size_t n=1; n<=number; n++)              // display of all the neurons
           *outstr << "\t" << n ;
       *outstr << std::endl;
 }
@@ -61,9 +61,9 @@ void Simulation::print(const int& i)
       *outstr << i;								// display of the simulation time step
       for (auto n : network->get_neurons()) {
             if (network->neuron_firing(n)){
-                *outstr << "\t" << '1' ;
+                *outstr << "\t" << '1' ;        // if the neuron is firing, print 1 in the column of the neuron at the corresponding time
             } else {
-                *outstr << "\t" << '0' ;
+                *outstr << "\t" << '0' ;		// if the neuron is not firing, same but print a 0. 
             }
       }
       *outstr << std::endl;
@@ -71,10 +71,21 @@ void Simulation::print(const int& i)
 
 void Simulation::run() 
 {
+	// for each step of the simulation, first the network is updated by updating each neurons of the network
+	// then the results are printed in the output file 
 	for (int i(1); i<=endtime; ++i) {
 		network->update();
+		
+		/*for (size_t i(0); i<network->get_neurons().size(); ++i) {
+			std::cerr << network->get_neurons()[i].get_potential() << "\t";
+		}
+		std::cerr << std::endl;*/
+		
 		this->print(i);
 	}
+	
+	// the output file is closed
+	if (outfile.is_open()) outfile.close();
 }
 
 Simulation::~Simulation() 

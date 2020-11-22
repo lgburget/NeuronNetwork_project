@@ -32,6 +32,7 @@ public:
 	//void equation();
 	void update_pot();
 	void update_rec();
+	void update_if_firing();
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 ///@}
 /*! @name Setters/Getters

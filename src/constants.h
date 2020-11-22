@@ -1,14 +1,14 @@
+#pragma once
 #include <tclap/CmdLine.h>
 #include <array>
 #include <fstream>
 #include <iostream>
-#pragma once
-
 #include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <cmath>
 
 
 /*!

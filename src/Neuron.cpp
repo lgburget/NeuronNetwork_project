@@ -15,9 +15,9 @@ Neuron::Neuron(bool excit) : curr_(0.0)
 		c = -65;
 		d = 2;
 	}
-	params_ = {a,b,c,d,excit};				// set the parameters of neuron
-	pot_ = -65;
-	rec_ = b*pot_;
+	this->set_params ({a,b,c,d,excit});				// set the parameters of neuron
+	this->set_potential(-65);
+	this->set_recovery (b*pot_);
 	
 }
 
@@ -35,13 +35,17 @@ Neuron::Neuron(bool excit) : curr_(0.0)
 
 void Neuron::update_pot()
 {
-	pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);		
+	pot_ += _Delta_T_*((0.04*pot_*pot_) + (5*pot_) + 140 - rec_ + curr_);		
 }
 
 void Neuron::update_rec()
 {
-	if (firing()) {												// if the neuron is firing, potentiel and recovery are reset
-		pot_ = params_.c;
-		rec_ += params_.d;
-	} else rec_ += 2*_Delta_T_*params_.a*(params_.b*pot_-rec_);
+	rec_ += 2*_Delta_T_*params_.a*((params_.b*pot_) - rec_);
 }
+
+void Neuron::update_if_firing()
+{
+	pot_ = params_.c;
+	rec_ += params_.d;
+}
+

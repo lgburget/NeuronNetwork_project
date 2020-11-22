@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Neuron.h"
-#include "Random.h"
 
 /*! \class Network
  * A neuron network is a set of \ref Neuron and their connections.
@@ -30,7 +29,7 @@ public:
 /*!
   Provide access to the set of \ref Neuron.
 */
-	std::vector<Neuron> get_neurons() const { return neurons ; };
+	std::vector<Neuron> get_neurons() const { return neurons ; }
 	
 	
 /*!
@@ -40,7 +39,7 @@ public:
 /*!
   Provides access to the set of \ref links.
  */
-	Link get_links() const { return links ; };
+	Link get_links() const { return links ; }
 /*!
  * Creates a new link in the map \ref links.
  * \param n_r (size_t): receiving neuron,
