@@ -38,7 +38,7 @@ _SIMULERR_(OUTPUT_ERROR, 30)
 #undef _SIMULERR_
 
 /// * default parameter values *
-#define _Numbers_ 7.
+#define _Numbers_ 15.
 #define _Proportion_Excitatory_ 0.4
 #define _Simulation_Time_ 30.
 #define _Connectivity_ 30.
