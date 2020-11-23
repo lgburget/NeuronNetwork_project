@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
 	_RNG = new RandomNumbers;
 	try{
 		Simulation s(argc, argv);
-		s.header();
+		//s.header();
 		s.run();
 	} catch(SimulError &e) {
 		std::cerr << e.what() << std::endl;
