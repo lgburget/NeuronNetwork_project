@@ -22,10 +22,8 @@ Simulation::Simulation(int argc, char **argv)
 
 		//Check the values of parameters get in the command line
 
-        if ((prop_e.getValue() <0) or (prop_e.getValue()>1)) throw(std::runtime_error("Proportion of Excitatory Neurons must be between 0 and 1"));
-        if (time.getValue() <= 0) throw(std::runtime_error("Simulation Time must be positive"));
-        if (lambda.getValue() <= 0) throw(std::runtime_error("Average Connectivity must be positive"));
-        if (neuron.getValue() <= 0) throw(std::runtime_error("Number of Neurons must be positive")) ;
+        if (((prop_e.getValue() <0) or (prop_e.getValue()>1)) or (time.getValue() <= 0) or (lambda.getValue() <= 0) or (neuron.getValue() <= 0) )
+        throw(std::runtime_error("Parametres non conformes."));
 
         // creation of an output file
         std::string outfname = ofile.getValue();
