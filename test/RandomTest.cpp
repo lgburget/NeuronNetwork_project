@@ -92,8 +92,8 @@ TEST(Network, potential) {
 	net.set_neuron_potential(1, 35.0);
 	net.set_neuron_potential(2, 35.0);
 	double i = net.total_current(0);
-	EXPECT_GE(i, -4);
-    EXPECT_LT(i, 6);
+	EXPECT_GE(i, -10);
+    EXPECT_LT(i, 12);
 	
 }
 
@@ -105,7 +105,7 @@ TEST(Neuron, firing) {
 	n2.set_potential(0.0);
 	EXPECT_EQ(false, n2.firing());
 	
-	n1.update_rec();
+	n1.update_if_firing();
 	EXPECT_EQ(n1.get_params().c, n1.get_potential());
 }
 
