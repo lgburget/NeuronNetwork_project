@@ -1,6 +1,6 @@
 #include "Simulation.h"
 
-Simulation::Simulation(int argc, char **argv) 
+Simulation::Simulation(int argc, char **argv)
 {
      try {
 		// get the parameter in the command line
@@ -21,29 +21,33 @@ Simulation::Simulation(int argc, char **argv)
         cmd.parse(argc, argv);
 
 		//Check the values of parameters get in the command line
+
         if ((prop_e.getValue() <0) or (prop_e.getValue()>1)) throw(std::runtime_error("Proportion of Excitatory Neurons must be between 0 and 1"));
         if (time.getValue() <= 0) throw(std::runtime_error("Simulation Time must be positive"));
         if (lambda.getValue() <= 0) throw(std::runtime_error("Average Connectivity must be positive"));
         if (neuron.getValue() <= 0) throw(std::runtime_error("Number of Neurons must be positive")) ;
-       
+
         // creation of an output file
         std::string outfname = ofile.getValue();
         if (outfname.length()) outfile.open(outfname, std::ios_base::out);
-        
+
         // Setting of parameters into attributs if simulation
         endtime = time.getValue();
         number = neuron.getValue();
         prop_exc = prop_e.getValue();
         connectivity = lambda.getValue();
         intensity = intens.getValue();
-        
+
         // Creation of the neuron network
         network = new Network(number, prop_exc, connectivity, intensity);
 
-     } catch (std::runtime_error &e) { std::cout<<e.what()<<std::endl; };
+     } catch (std::runtime_error &e) {
+       std::cout<<e.what()<<std::endl;
+       exit(EXIT_FAILURE);
+     } ;
 }
 
-void Simulation::header() 
+void Simulation::header()
 {
       std::ostream *outstr = &std::cout;
       if (outfile.is_open()) outstr = &outfile;
@@ -57,38 +61,38 @@ void Simulation::print(const int& i)
 {
       std::ostream *outstr = &std::cout;
       if (outfile.is_open()) outstr = &outfile;
-      
+
       *outstr << i;								// display of the simulation time step
       for (auto n : network->get_neurons()) {
             if (network->neuron_firing(n)){
                 *outstr << "\t" << '1' ;        // if the neuron is firing, print 1 in the column of the neuron at the corresponding time
             } else {
-                *outstr << "\t" << '0' ;		// if the neuron is not firing, same but print a 0. 
+                *outstr << "\t" << '0' ;		// if the neuron is not firing, same but print a 0.
             }
       }
       *outstr << std::endl;
 }
 
-void Simulation::run() 
+void Simulation::run()
 {
 	// for each step of the simulation, first the network is updated by updating each neurons of the network
-	// then the results are printed in the output file 
+	// then the results are printed in the output file
 	for (int i(1); i<=endtime; ++i) {
 		network->update();
-		
+
 		/*for (size_t i(0); i<network->get_neurons().size(); ++i) {
 			std::cerr << network->get_neurons()[i].get_potential() << "\t";
 		}
 		std::cerr << std::endl;*/
-		
+
 		this->print(i);
 	}
-	
+
 	// the output file is closed
 	if (outfile.is_open()) outfile.close();
 }
 
-Simulation::~Simulation() 
+Simulation::~Simulation()
 {
 	delete network;
 }
