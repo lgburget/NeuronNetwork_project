@@ -1,7 +1,7 @@
 /* The standard CSS for doxygen 1.8.13 */
 
 body, table, div, p, dl {
-	font: 400 14px/22px Roboto,sans-serif;
+	font: 400 14px/22px Arial,sans-serif;
 }
 
 p.reference, p.definition {
@@ -15,15 +15,16 @@ h1.groupheader {
 }
 
 .title {
-	font: 400 14px/28px TeXGyreChorus,sans-serif;
+	font: 400 14px/28px Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
 	font-size: 150%;
 	font-weight: bold;
+	color: #3480AE;
 	margin: 10px 2px;
 }
 
 h2.groupheader {
 	border-bottom: 1px solid #879ECB;
-	color: #354C7B;
+	color: #3480AE;
 	font-size: 150%;
 	font-weight: normal;
 	margin-top: 1.75em;
@@ -524,7 +525,7 @@ table.memberdecls {
 	margin-bottom: -1px;
 	background-image: url('nav_f.png');
 	background-repeat: repeat-x;
-	background-color: #E2E8F2;
+	background-color: #CBEAF1;
 	line-height: 1.25;
 	font-weight: 300;
 	float:left;
@@ -1173,16 +1174,18 @@ dl.section dd {
 
 #projectname
 {
-	font: 300% Tahoma, Arial,sans-serif;
-	margin: 0px;
+	font: 400% Tahoma, Avantgarde, TeX Gyre Adventor, URW Gothic L,sans-serif;
+	color: #3EACE7;
+	margin: 5px;
 	padding: 2px 0px;
 }
     
 #projectbrief
 {
-	font: 120% Tahoma, Arial,sans-serif;
-	margin: 0px;
-	padding: 0px;
+	font: 150% Tahoma, Avantgarde, TeX Gyre Adventor, URW Gothic L,sans-serif;
+	color: #52CEDF;
+	margin: 5px;
+	padding: px;
 }
 
 #projectnumber
