@@ -4,6 +4,16 @@ body, table, div, p, dl {
 	font: 400 14px/22px Arial,sans-serif;
 }
 
+
+h1 {
+	font: 400 14px/28px Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+	font-size: 200%;
+	margin: 10px 2px;
+	padding-left: 20px;
+	padding-top: 20px;
+	color: #4ABBD5;
+}
+
 p.reference, p.definition {
 	font: 400 14px/22px Roboto,sans-serif;
 }
@@ -295,6 +305,7 @@ div.contents {
 	margin-left: 12px;
 	margin-right: 8px;
 }
+
 
 td.indexkey {
 	background-color: #EBEFF6;
