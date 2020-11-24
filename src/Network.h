@@ -4,11 +4,11 @@
 
 /*! \class Network
  * A neuron network is a set of \ref Neuron and their connections.
- * Each \ref Neuron send signal to a unique one, but can receive signal from several ones.
+ * Each \ref Neuron send a signal to a unique one, but can receive signal from several ones.
  *
  * Neurons are identified by their index in the vector \ref neurons.
  *
- * Links between \ref neurons are directional links listed in a map \ref links : the first
+ * Links between \ref neurons are directional links listed in the map \ref links : the first
  * element of the map is the pair of neurons implicated in the link (first=receiving neuron,
  * second=sending neuron) and the second element is the intensity of connection.
  */
@@ -23,23 +23,36 @@ public:
  */
 ///@{
 	Network();
+/*!
+ * The constructor creates all the neurons of the network and links them randomly using \ref random_connect. 
+ */
 	Network(int number, double prop_excitatory, double connectivity, double intensity);
 ///@}
 
+/*! @name Getters/setters
+ */
+///@{
 /*!
-  Provide access to the set of \ref Neuron.
-*/
+ * Provide access to the set of \ref Neuron.
+ */
 	std::vector<Neuron> get_neurons() const { return neurons ; }
 	
-	
 /*!
-  Allows the test program to modify the potential of a neuron in the network
- */
-	void set_neuron_potential(const size_t &n, const double& pot) { neurons[n].set_potential(pot); }
-/*!
-  Provides access to the set of \ref links.
+ * Provides access to the set of \ref links.
  */
 	Link get_links() const { return links ; }
+	
+/*!
+ * Allows the test program to modify the potential of a \ref Neuron in the network
+ * \param n (size_t): neuron to change potential
+ * \param pot (double): new potential value
+ */
+	void set_neuron_potential(const size_t &n, const double& pot) { neurons[n].set_potential(pot); }
+ ///@}
+ 
+/*! @name Linking neurons
+ */
+///@{
 /*!
  * Creates a new link in the map \ref links.
  * \param n_r (size_t): receiving neuron,
@@ -65,16 +78,26 @@ public:
 */
 	std::vector<std::pair<size_t, double>> find_neighbours(const size_t &n);
 	
+///@}
+	
+	
+/*! @name Testing neurons properties
+ */
+///@{
 /*!
  *Tests if the neuron in parameter is firing
-*/
+ */
 	bool neuron_firing (const Neuron &neuron_) const;
 	
 /*!
  *Tests if the \ref Neuron \p n is already sending signal to another one (a neuron can only send to a unique other neuron)
-*/
+ */
 	bool is_sending(const size_t& n) const;
+///@} 
 
+/*! @name Running the simulation
+ */
+///@{
 /*!
  *Calculates the total synaptic current received by neuron \p n.
  *\param n : the index of the receiving neuron.
@@ -83,14 +106,20 @@ public:
 	double total_current(const size_t &n);
 
 /*!
-  In order to perform one time-step of the simulation, it updates twice the potential and once the recovery. 
-*/
+ * In order to perform one time-step of the simulation, it updates twice the potential and once the recovery. 
+ */
 	void update();
-
+///@}
 
 
 private:
+/*!
+ * Set of \ref Neuron that composes the network. 
+ */
 	std::vector<Neuron> neurons;
+/*!
+ * List of directional links between \ref Neuron. 
+ */
 	Link links;
 
 };
