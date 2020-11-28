@@ -1169,13 +1169,15 @@ dl.section dd {
 #projectlogo
 {
 	text-align: center;
-	vertical-align: bottom;
+	vertical-align: middle;
 	border-collapse: separate;
 }
  
 #projectlogo img
 { 
 	border: 0px none;
+	width: 185px;
+	height: auto;
 }
  
 #projectalign
@@ -1186,7 +1188,7 @@ dl.section dd {
 #projectname
 {
 	font: 400% Tahoma, Avantgarde, TeX Gyre Adventor, URW Gothic L,sans-serif;
-	color: #3EACE7;
+	color: #E2EEF1;
 	margin: 5px;
 	padding: 2px 0px;
 }
@@ -1194,7 +1196,7 @@ dl.section dd {
 #projectbrief
 {
 	font: 150% Tahoma, Avantgarde, TeX Gyre Adventor, URW Gothic L,sans-serif;
-	color: #52CEDF;
+	color: #A8E8F0;
 	margin: 5px;
 	padding: px;
 }
@@ -1211,6 +1213,7 @@ dl.section dd {
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
+	background: url(../../res/net.jpg);
 	border-bottom: 1px solid #5373B4;
 }
 
