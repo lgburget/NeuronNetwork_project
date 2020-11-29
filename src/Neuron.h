@@ -18,10 +18,13 @@ struct Neuron_parameters {double a, b, c, d;
 class Neuron{
 public:
 /*! @name Initializing
- * A neuron is initialized using its quality (excitatory or inhibitory), parameters are a combination of constants and uniform distributions. Membrane potential and recovery parameters don't depend on the quality of the neuron.
+ * A \ref Neuron is initialized using its type and the noises on a, b, c and d. 
+ * Membrane potential and recovery parameters don't depend on the quality of the neuron.
+ * \ref Neuron_types is containing all the parameters associated with each type of \ref Neuron.
  */
 ///@{
-	Neuron(bool excit);
+	Neuron(const std::string &type, const std::vector<double> &n);
+	static const std::map<std::string, Neuron_parameters> Neuron_types;
 ///@}
 /*! @name Neuron states
  * Potentiel \ref pot_ is updated two times while recovery variable \ref rec_ is only updated once. Therefore there is two separated methods to update them.
@@ -35,6 +38,7 @@ public:
 	void update_if_firing();
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 ///@}
+
 /*! @name Setters/Getters
  */
 ///@{

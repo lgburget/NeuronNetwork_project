@@ -24,10 +24,10 @@ RandomNumbers::RandomNumbers(unsigned long int s) : seed(s) {
 	return norm(rng);
  }
 
- /*double RandomNumbers::exponential(const double rate) {
+ double RandomNumbers::exponential(const double rate) {
 	std::exponential_distribution<> exp(rate);
 	return exp(rng);
- }*/
+ }
  
  int RandomNumbers::poisson(double mean) {
 	std::poisson_distribution<> poi(mean);

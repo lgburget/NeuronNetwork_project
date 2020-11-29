@@ -1,24 +1,24 @@
 #include "Neuron.h"
 
-Neuron::Neuron(bool excit) : curr_(0.0)
+const std::map<std::string, Neuron_parameters> Neuron::Neuron_types {
+	{"RS",  {.02, .2,  -65, 8,   true}},
+    {"IB",  {.02, .2,  -55, 4,   true}},
+    {"FS",  {.1,  .2,  -65, 2,   false}},
+    {"LTS", {.02, .25, -65, 2,   false}},
+    {"RZ",  {.1,  .26, -65, 2,   true}}
+};
+
+Neuron::Neuron(const std::string &type, const std::vector<double> &n) : curr_(0.0) 
 {
-	double r = _RNG->uniform_double(0,1);    // picking a random value
-	double a,b,c,d;							 // parameters necessary to the initialisation of a neuron
-	if (excit) {
-		a = 0.02;
-		b = 0.2;
-		c = -65*(1 - (3*r*r/13));
-		d = 8*(1 - (3*r*r/4));
-	} else {
-		a = 0.1*(1 - (0.8*r));
-		b = 0.2*(1 + (0.25*r));
-		c = -65;
-		d = 2;
-	}
+	double a = Neuron_types.at(type).a * n[0];
+	double b = Neuron_types.at(type).b * n[1];
+	double c = Neuron_types.at(type).c * n[2];
+	double d = Neuron_types.at(type).d * n[3];
+	bool excit = Neuron_types.at(type).excit;
+	
 	this->set_params ({a,b,c,d,excit});				// set the parameters of neuron
 	this->set_potential(-65);
 	this->set_recovery (b*pot_);
-	
 }
 
 /*void Neuron::equation()

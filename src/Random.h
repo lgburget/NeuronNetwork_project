@@ -31,8 +31,8 @@ public:
     template<class T> void uniform_int(T&, int lower=0, int upper=100);
     double normal(double mean=0, double sd=1);
     template<class T> void normal(T&, double mean=0, double sd=1);
-    //double exponential(const double rate=1);
-    //template<class T> void exponential(T&, const double rate=1);
+    double exponential(const double rate=1);
+    template<class T> void exponential(T&, const double rate=1);
     int poisson(double mean=1);
     template<class T> void poisson(T&, double mean=1);
     //int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
