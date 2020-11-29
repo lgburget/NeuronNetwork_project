@@ -3,21 +3,111 @@
 Network::Network()
 {}
 
-Network::Network(int number, double prop_excitatory, double connectivity, double intensity)
+Network::Network(size_t number, std::string n_types, double d, double connectivity, std::string model, double intensity)
 {
-	int nb_excitatory = (int)floor(number*prop_excitatory);
-	// creation of nb_excitatory excitatory neurons
-	for (int i(0); i<nb_excitatory; ++i) {
-		Neuron n(true);
+	// Initialisation of the noises
+	for(int i(0); i<4; ++i) {
+		double x_noise = _RNG->uniform_double(1.0 - d, 1.0 + d);
+		noises.push_back(x_noise);
+	}
+	
+	// Fonction that extract types proportions from a given n_types string
+	extract_types(n_types, number);
+	
+	// Calculation of the number of Neurons of each type
+	int nb_RS  = (int)floor(number*types_proportions["RS"]);
+	int nb_IB  = (int)floor(number*types_proportions["IB"]);
+	int nb_FS  = (int)floor(number*types_proportions["FS"]);
+	int nb_LTS = (int)floor(number*types_proportions["LTS"]);
+	int nb_RZ  = (int)floor(number*types_proportions["RZ"]);	
+	
+	// creation of the good number of each type of neurons
+	int start = 0;
+	int stop = nb_RS;
+	
+	for (int i(start); i<stop; ++i) {
+		Neuron n("RS", noises);		
 		neurons.push_back(n);
 	}
-	// The rest of neurons are inhibitory
-	for (int i(nb_excitatory); i<number; ++i) {
-		Neuron n(false);
+	start += nb_RS;
+	stop += nb_IB;
+	
+	for (int i(start); i<stop; ++i) {
+		Neuron n("IB", noises);
 		neurons.push_back(n);
 	}
+	start += nb_IB;
+	stop += nb_FS;
+	
+	for (int i(start); i<stop; ++i) {
+		Neuron n("FS", noises);
+		neurons.push_back(n);
+	}
+	start += nb_FS;
+	stop += nb_LTS;
+	
+	for (int i(start); i<stop; ++i) {
+		Neuron n("LTS", noises);
+		neurons.push_back(n);
+	}
+	start += nb_LTS;
+	stop += nb_RZ;
+	
+	for (int i(start); i<stop; ++i) {
+		Neuron n("RZ", noises);
+		neurons.push_back(n);
+	}
+	
 	// Creation of all links between neurons
-	random_connect(connectivity, intensity);
+	random_connect(connectivity, intensity, model);
+}
+
+void Network::extract_types(std::string n_types, int number) 
+{
+	int size = number;
+	
+	if(n_types.empty()) {
+		types_proportions["RS"] = 0.5;
+		types_proportions["FS"] = 0.5;
+	} 
+	
+	else {
+		n_types.erase(std::remove_if(n_types.begin(), n_types.end(), isspace), n_types.end());
+        std::string label;
+        std::stringstream ss(n_types);
+        double total = 0.0;
+        
+        for (std::string item; total<size && std::getline(ss, item, ','); ) {
+            size_t split = item.find(':');
+            label = item.substr(0, split);
+            double prop = std::min(std::stod(item.substr(split+1)), 1.0);
+            
+            if(prop>0 && label!="RS" && types_proportions.count(label)) {
+				if(total + prop > 1.0) prop = 1.0 - total;
+					
+				types_proportions[label] = prop;
+				total += prop;
+			} 	
+		}
+		if(total <= 1.0) types_proportions["RS"] = 1.0 - total;
+	}
+}
+
+int Network::calculate_connections(double connectivity, std::string model)
+{
+	if(model == "constant") return (int)std::floor(connectivity);
+	
+	if(model == "poisson") {
+		int c = _RNG->poisson(connectivity);
+		return (int)std::floor(c);
+	}
+	
+	if(model == "over-dispersed") {
+		double l = _RNG->exponential(1.0/connectivity);
+		int c = _RNG->poisson(l);
+		return (int)std::floor(c);
+	}
+	else return (int)std::floor(connectivity);
 }
 
 void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
@@ -27,7 +117,7 @@ void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
 	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;			// check that the map doesn't already contains a link for these neurons
 }
 
-void Network::random_connect(const double& lambda, const double &i)
+void Network::random_connect(const double& connectivity, const double &i, std::string &model)
 {
 	// values that will be picked at random
 	int link_number;
@@ -40,7 +130,7 @@ void Network::random_connect(const double& lambda, const double &i)
 	// For each neuron, a number of connection picked at random is created
 	for (size_t j(0); j<neurons.size(); ++j) {
 		_RNG->shuffle(index);                                                   // shuffle the vector of index in order to pick neurons at random (corresponding to the order of index)
-		link_number = _RNG->poisson(lambda);                                    // Random number of link for the neuron j
+		link_number = calculate_connections(connectivity, model);				// Calculation of the number of connections made by the Neuron
 		// The first link_number neurons of vector index will be connected to neuron j
 		size_t stop = link_number; 
 		for (size_t m(0); m<stop; ++m) {
