@@ -31,31 +31,42 @@ TEST(Random, distributions) {
 }
 
 TEST(Network, Initialze) {
-	Network net1(100, 1, 5, 1);
+	Network net1(50, "RS:1.", 0.1, 5, "constant", 1);
 	std::vector<Neuron> neurons1 = net1.get_neurons();
 	for(auto n : neurons1)
 	{
 		Neuron_parameters param = n.get_params();
 		EXPECT_EQ(true, param.excit);
-		EXPECT_EQ(0.02, param.a);
-		EXPECT_EQ(0.2, param.b);
-		EXPECT_EQ(-13, n.get_recovery());
+		EXPECT_NEAR(0.02, param.a, 0.002);
+		EXPECT_NEAR(0.2, param.b, 0.02);
+		EXPECT_NEAR(-13, n.get_recovery(), 1.3);
 	}
-	Network net2(100, 0, 5, 1);
+	Network net2(50, "FS:1.", 0.1, 5, "constant", 1);
 	std::vector<Neuron> neurons2 = net2.get_neurons();
 	for(auto n : neurons2)
 	{
 		Neuron_parameters param = n.get_params();
 		EXPECT_EQ(false, param.excit);
-		EXPECT_EQ(-65, param.c);
-		EXPECT_EQ(2, param.d);
-		EXPECT_EQ(-65, n.get_potential());
+		EXPECT_NEAR(-65, param.c, 6.5);
+		EXPECT_NEAR(2, param.d, 0.2);
+		EXPECT_NEAR(-13, n.get_recovery(), 1.3);
 	}
+	Network net3(50, "", 0.1, 0, "constant", 1);
+	std::vector<Neuron> neurons3 = net3.get_neurons();
+	int n_inhib = 0;
+	int n_excit = 0;
+	for(auto n : neurons3)
+	{
+		if(n.get_params().excit) ++n_excit;
+		else ++n_inhib;
+	}
+	EXPECT_EQ(25, n_inhib);
+	EXPECT_EQ(25, n_excit);
 }
 
 
 TEST(Network, addlink) {
-	Network net(2, 1, 0, 1);
+	Network net(2, "RS:1", 0., 0, "", 1);
 	std::vector<Neuron> nn = net.get_neurons();
 	net.add_link(0, 1, 1);
 	EXPECT_EQ(true, net.is_sending(1));
@@ -66,14 +77,21 @@ TEST(Network, addlink) {
 
 
 TEST(Network, linking) {
-	Network net(100, 0.5, 5, 1);
-	std::vector<Neuron> nn = net.get_neurons();
-	double mean = (double)net.get_links().size()/100;
-	EXPECT_NEAR(mean, 5.0, 1.0);	
+	Network net1(50, "", 0., 5, "constant", 1);
+	double mean1 = (double)net1.get_links().size()/50;
+	EXPECT_EQ(mean1, 5.0);
+	
+	Network net2(50, "", 0., 5, "poisson", 1);
+	double mean2 = (double)net2.get_links().size()/50;
+	EXPECT_NEAR(mean2, 5.0, 1.0);
+	
+	Network net3(50, "", 0., 5, "over-dispersed", 1);
+	double mean3 = (double)net3.get_links().size()/50;
+	EXPECT_NEAR(mean3, 5.0, 1.0);		
 }
 
 TEST(Network, Neighbours) {
-	Network net(3, 0.5, 0, 0);
+	Network net(4, "", 0., 0, "", 0);
 	std::vector<Neuron> nn = net.get_neurons();
 	net.add_link(0, 1, 0);
 	net.add_link(0, 2, 0);
@@ -85,18 +103,23 @@ TEST(Network, Neighbours) {
 }
 
 TEST(Network, potential) {
-	Network net(3, 1, 0, 1);
+	Network net(3, "RS:1.", 0., 0, "", 1);
 	std::vector<Neuron> nn = net.get_neurons();
 	net.add_link(0, 1, 1);
 	net.add_link(0, 2, 1);
 	net.set_neuron_potential(1, 35.0);
 	net.set_neuron_potential(2, 35.0);
 	double i = net.total_current(0);
-	EXPECT_GE(i, -10);
-    EXPECT_LT(i, 12);
-	
+	EXPECT_GE(i, (-2.326*5. + 1.));
+    EXPECT_LT(i, (2.326*5. + 1.));
+	/*
+	 * 2.326 is the 99th percentile of the normal distribution Norm(0,1)
+	 * it is multiplied by 5 because the neuron 0 is excitatory
+	 * 1 is added because 2 excitatory neurons send their signal to neuron 0 and have a connectivity of 1 with it
+	 * So congratulations if the test failed, you are a 1 in a 100
+	 */
 }
-
+/*
 TEST(Neuron, firing) {
 	Neuron n1(false);
 	n1.set_potential(30.1);
@@ -108,7 +131,7 @@ TEST(Neuron, firing) {
 	n1.update_if_firing();
 	EXPECT_EQ(n1.get_params().c, n1.get_potential());
 }
-
+*/
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

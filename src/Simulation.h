@@ -74,9 +74,21 @@ private:
  */
   		size_t number;
 /*!
- * Proportion of excitatory \ref Neuron in the \ref network
+ * Proportion of each specific type of \ref Neuron
  */
-  		double prop_exc; 
+		std::string n_types;
+/*!
+ * Margin applied on the parameters of specific \ref Neuron types
+ */
+		double d;
+/*!
+ * Possible_models defines the name of the different models for the connectivity
+ */
+		std::vector<std::string> allowed;
+/*!
+ * Model holds the name of model chosen by the user or the name of the defalut model  
+ */
+		std::string model;
 /*!
  * Average number of connection received by a \ref Neuron in the \ref network
  */
