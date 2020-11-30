@@ -77,7 +77,7 @@ public:
  * \param n_s (size_t): sending neuron,
  * \param i (double): link intensity.
  */
-    void add_link(const size_t& n_r, const size_t& n_s, double i);
+    bool add_link(const size_t& n_r, const size_t& n_s, double i);
 /*!
  * Creates all the random links of the network.
  * Each \ref Neuron will expect to receive the inputs of n other neurons, randomly choosed using
@@ -106,11 +106,6 @@ public:
  *Tests if the neuron in parameter is firing
  */
 	bool neuron_firing (const Neuron &neuron_) const;
-	
-/*!
- *Tests if the \ref Neuron \p n is already sending signal to another one (a neuron can only send to a unique other neuron)
- */
-	bool is_sending(const size_t& n) const;
 ///@} 
 
 /*! @name Running the simulation

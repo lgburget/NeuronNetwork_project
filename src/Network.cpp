@@ -110,11 +110,14 @@ int Network::calculate_connections(double connectivity, std::string model)
 	else return (int)std::floor(connectivity);
 }
 
-void Network::add_link(const size_t& n_r, const size_t& n_s, double i)
+bool Network::add_link(const size_t& n_r, const size_t& n_s, double i)
 {
-	if(n_r==n_s) return;                                            // check that the two neurons are not actually the same neuron
-	if((n_r or n_s)>neurons.size()) return;							// check that the neurons exist
-	if (not links.count({n_r,n_s})) links[{n_r,n_s}] = i;			// check that the map doesn't already contains a link for these neurons
+	if(((n_r or n_s)>neurons.size()) or n_r==n_s) return false;			// check that the neurons exist and that the two neurons are not actually the same neuron.
+	if (not links.count({n_r,n_s}))										// check that the map doesn't already contains a link for these neurons.
+	{
+		links[{n_r,n_s}] = i;
+		return true;
+	}else return false;
 }
 
 void Network::random_connect(const double& connectivity, const double &i, std::string &model)
@@ -125,28 +128,21 @@ void Network::random_connect(const double& connectivity, const double &i, std::s
 
 		// generation of an index vector containing the index of neurons in the croissant order
 		std::vector<size_t> index(neurons.size());
-		for (unsigned long k(0); k<=neurons.size(); ++k) index[k] = k;
+		for (size_t k(0); k<neurons.size(); ++k) index[k] = k;
 
 		// For each neuron, a number of connection picked at random is created
-		for (unsigned long j(0); j<=neurons.size(); ++j) {
+		for (size_t j(0); j<neurons.size(); ++j) {
 
 		_RNG->shuffle(index);                                       // shuffle the vector of index in order to pick neurons at random (corresponding to the order of index)
 		link_number = calculate_connections(connectivity, model);
 
 		// Calculation of the number of connections made by the Neuron
 		// The first link_number neurons of vector index will be connected to neuron j
-		unsigned long stop = link_number;
+		int stop = 0;
 
-//PROBLEME : Le programme crash a ce niveau !
-		for (unsigned long m(0); m<stop; ++m) {
-
-			intensity = _RNG->uniform_double(0, 2*i); 	 		// intensity of connection is picked at random
-
-//PROBLEME!! : NE RENTRE JAMAIS DANS LE IF, TOUJOURS DANS LE ELSE!
-			if ((not (this->is_sending(index[m]))) ) {					// check that neuron[m] doesn't already send a signal to an other neuron to add link
-
-				add_link(j,index[m],intensity); }
-			else  { ++stop;	 } 							// if the neuron[m] already send a signal to an other neuron, we will choose the next neuron so we shift the stop value
+		for (size_t m(0); m<neurons.size() and stop<link_number; ++m) {
+			intensity = _RNG->uniform_double(0, 2*i); 	 				// intensity of connection is picked at random
+			if (add_link(j,index[m],intensity)) ++stop;
 		}
 	}
 }
@@ -170,17 +166,6 @@ bool Network::neuron_firing (const Neuron &neuron_) const
 {
 		return neuron_.firing();
 }
-
-
-// PROBLEME : Elle rend toujours TRUE !
-bool Network::is_sending(const size_t& n) const
-{
-	for (unsigned long i(0); i<neurons.size(); ++i) {
-		if (links.count({i,n}) == 1){ return true; }
-	}
-		return false;
-}
-
 
 double Network::total_current(const size_t &n)
 {
@@ -206,26 +191,8 @@ double Network::total_current(const size_t &n)
 
 void Network::update()
 {
-	for (unsigned long i(0); i<neurons.size(); ++i) {
-		if (neurons[i].firing()) {									   // In case neuron is firing parameters are reset
-			neurons[i].update_if_firing();
-		} else {													   // otherwise, potential is updated twice and recovery once
-			// first loop, only potential is updated
-			neurons[i].set_current(this->total_current(i));
-			neurons[i].update_pot();
-			// second loop, both potential and recovery are updated
-			//neurons[i].set_current(this->total_current(i));
-			neurons[i].update_pot();
-			neurons[i].update_rec();
-		}
-	}
-
-
-	/*// Second loop to update both potential and recovery
 	for (size_t i(0); i<neurons.size(); ++i) {
-		neurons[i].set_current(this->total_current(i));
-		neurons[i].update_pot();
-		neurons[i].update_rec();
-	}
-	*/
+		neurons[i].set_current(total_current(i));
+		neurons[i].equation();
+		}
 }

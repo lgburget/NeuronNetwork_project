@@ -32,10 +32,12 @@ public:
  */
 ///@{
 	// Equation calculates differential equations based on a simple model of spiking neurons.
-	//void equation();
+	void equation();
+	/*
 	void update_pot();
 	void update_rec();
 	void update_if_firing();
+	*/
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 ///@}
 
