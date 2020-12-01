@@ -52,6 +52,7 @@ public:
 	double get_recovery() const {return rec_;}
 	void set_current(const double& curr) {curr_ = curr;}
 	double get_current() const {return curr_;}
+	std::string get_type() const {return n_type;}
 ///@}
 private:
 /*! @name Cellular properties
@@ -59,6 +60,7 @@ private:
  */
 ///@{
 	Neuron_parameters params_;
+	std::string n_type;
 ///@}
 /*! @name State variables
  * State variables change after every step of the simulation.

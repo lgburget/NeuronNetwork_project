@@ -52,7 +52,16 @@ public:
 /*!
  * Print the results of the simulation in the output file
  */
-		void print();
+		void print(const int& t);
+/*!
+ * Print a header for function \ref print_sample
+ */
+		void header();
+/*!
+ * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step
+ */
+		void print_sample(const int& t);
+		void print_properties(const std::string& type);
 /*!
  * \ref run is the function that performs the simulation. It iterates on the simulation time and for each step, first updates the neuron \ref Network, then prints the results using \ref print. 
  */
@@ -101,4 +110,8 @@ private:
  * Output file, where the results will be printed
  */
 		std::ofstream outfile;
+/*!
+ * Output file, where the potential, recovery and current of some neurons will be printed
+ */
+		std::ofstream samplefile;
 };

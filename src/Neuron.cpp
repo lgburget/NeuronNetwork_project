@@ -8,8 +8,9 @@ const std::map<std::string, Neuron_parameters> Neuron::Neuron_types {
     {"RZ",  {.1,  .26, -65, 2,   true}}
 };
 
-Neuron::Neuron(const std::string &type, const std::vector<double> &n) : curr_(0.0) 
+Neuron::Neuron(const std::string &type, const std::vector<double> &n) : curr_(0.0)
 {
+	n_type = type;
 	double a = Neuron_types.at(type).a * n[0];
 	double b = Neuron_types.at(type).b * n[1];
 	double c = Neuron_types.at(type).c * n[2];

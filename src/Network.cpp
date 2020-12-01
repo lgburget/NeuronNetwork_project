@@ -167,6 +167,23 @@ bool Network::neuron_firing (const Neuron &neuron_) const
 		return neuron_.firing();
 }
 
+bool Network::is_type(const std::string& type) const
+{
+	for (size_t i(0); i<neurons.size(); ++i) {
+		if (neurons[i].get_type() == type) return true;
+	}
+	return false;
+}
+
+size_t Network::find_first_neuron(const std::string& type) const
+{
+	for (size_t i(0); i<neurons.size(); ++i) {
+		if (neurons[i].get_type() == type) return i;
+	}
+	return 0;
+}
+
+
 double Network::total_current(const size_t &n)
 {
 	double current(0.0);

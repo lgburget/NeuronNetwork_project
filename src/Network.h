@@ -53,6 +53,18 @@ public:
  * Provides access to the \ref noises
  */
 	std::vector<double> get_noises() const { return noises; }
+/*!
+ * Provides access to the potential of neuron \p n
+ */
+	double get_potential(const size_t& n) const { return neurons[n].get_potential(); }
+/*!
+ * Provides access to the recovery of neuron \p n
+ */
+	double get_recovery(const size_t& n) const { return neurons[n].get_recovery(); }
+/*!
+ * Provides access to the current of neuron \p n
+ */
+	double get_current(const size_t& n) const { return neurons[n].get_current(); }
 	
 /*!
  * Allows the test program to modify the potential of a \ref Neuron in the network
@@ -106,6 +118,14 @@ public:
  *Tests if the neuron in parameter is firing
  */
 	bool neuron_firing (const Neuron &neuron_) const;
+/*!
+ *Tests if there is at least one \ref Neuron of type \p type in the network
+ */
+	bool is_type(const std::string& type) const;
+/*!
+ * finds the index of the first \ref Neuron of one type of neuron
+ */
+	size_t find_first_neuron(const std::string& type) const;
 ///@} 
 
 /*! @name Running the simulation
