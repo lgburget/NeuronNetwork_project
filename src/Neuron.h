@@ -4,9 +4,17 @@
 #include "Random.h"
 
 /*! \class Neuron
- * The Neuron class creates a neuron which has four cellular properties (a, b, c, d), a quality (excitatory or inhibitory)
- * and three others attributes which represent its state (membrane potential, membrane recovery variable, synaptic currents). 
- * A neuron is a piece of a larger system called \ref Network.
+ * A Neuron is a cell which has four cellular properties (a, b, c, d) and a quality (excitatory or inhibitory) documented in \ref params_.
+ * 
+ * There are five types of neurons:
+ * - inhibitory: FS and LTS
+ * - excitatory: RS, IB and RZ
+ * 
+ * The type of the neuron determines its cellular properties. Values are regrouped in the map \ref Neuron_types.
+ * 
+ * A neuron has three others attributes which represent its state (membrane potential \ref pot_, membrane recovery variable \ref rec_, synaptic currents \ref curr_). 
+ * 
+ * A neuron is a piece of a larger system, the neuron \ref Network.
 */
  
 /*! \struct Neuron_parameters 
@@ -27,17 +35,22 @@ public:
 	static const std::map<std::string, Neuron_parameters> Neuron_types;
 ///@}
 /*! @name Neuron states
- * Potentiel \ref pot_ is updated two times while recovery variable \ref rec_ is only updated once. Therefore there is two separated methods to update them.
- * \ref update_rec() also tests if the \ref Neuron is \ref firing(). 
  */
 ///@{
-	// Equation calculates differential equations based on a simple model of spiking neurons.
+/*!
+ * Equation calculates differential equations based on a simple model of spiking neurons.
+ * */
 	void equation();
 	/*
+	Potentiel \ref pot_ is updated two times while recovery variable \ref rec_ is only updated once. Therefore there is two separated methods to update them.
+	\ref update_rec() also tests if the \ref Neuron is \ref firing(). 
 	void update_pot();
 	void update_rec();
 	void update_if_firing();
 	*/
+/*!
+ * Test if the neuron is firing.
+ */
 	bool firing() const {return (pot_ > _Discharge_Threshold_);}
 ///@}
 

@@ -6,7 +6,10 @@ RandomNumbers *_RNG;
  *
  * \section intro_sec What is the goal of this program ?
  *
- * This \b NeuronNetwork program allows the user to \b model a neuron \ref Network. 
+ * This \b Neuron \b Network program allows the user to \b model a neuron \ref Network. 
+ * 
+ * There are five different types of \ref Neuron in the \ref Network, whose proportions are choosen by the users.
+ * Depending on its type, a \ref Neuron has different cellular properties.
  * 
  * A \ref Neuron can be in two different state, depending on its membrane potential. 
  * Either it is in \b firing \b state, when the potential is more than a certain value, 
@@ -24,6 +27,9 @@ RandomNumbers *_RNG;
  * The output, which is the matrix, can then be computed into a \b raster \b plot where points 
  * represents \b firing neurons using an other program.
  * 
+ * In addition, two other output files are generated, printing the parameters of each neurons and the 
+ * properties values of a sample of neurons at each time of the \ref Simulation.
+ * 
  * \section install_sec How to use this program ?
  * 
  * In order to simulate the network, you have to provide some arguments:
@@ -32,8 +38,8 @@ RandomNumbers *_RNG;
  * - the \b total \b time you want your simulation to last
  * - the \b average \b number \b of \b connection a random neuron have
  * - the \b average \b intensity \b of \b connection between two random neurons
- * - the \b fraction \b of \b excitatory \b neurons within the network
- * - the \b file in which the results will be printed
+ * - the \b proportion \b of \b each \b type \b of \b neurons within the network
+ * - the \b files in which the results will be printed
  * 
  * If you don't provide these arguments, default parameters will be taken. 
  * 
@@ -44,7 +50,6 @@ int main(int argc, char **argv) {
 	_RNG = new RandomNumbers;
 	try{
 		Simulation s(argc, argv);
-		//s.header();
 		s.run();
 	} catch(SimulError &e) {
 		std::cerr << e.what() << std::endl;

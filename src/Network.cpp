@@ -161,6 +161,16 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 	return neighbours;
 }
 
+double Network::valence(const size_t &n)
+{
+	double valence = 0.0;
+	for (auto link: find_neighbours(n)) {
+		if (neurons[link.first].get_params().excit) valence += link.second;
+		else valence -= link.second;
+	}
+	return valence;
+}
+
 
 bool Network::neuron_firing (const Neuron &neuron_) const
 {

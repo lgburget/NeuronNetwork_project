@@ -32,6 +32,7 @@ public:
 /*!
  * Allows to extract from a string the proportion of each specific type of \ref Neuron
  * \param n_types: string to be read 
+ * \param number: total number of \ref Neuron in the \ref Network
  */
 	void extract_types(std::string n_types, int number);
 ///@}
@@ -92,13 +93,13 @@ public:
     bool add_link(const size_t& n_r, const size_t& n_s, double i);
 /*!
  * Creates all the random links of the network.
- * Each \ref Neuron will expect to receive the inputs of n other neurons, randomly choosed using
- * a poisson distribution with mean \p lambda.
- * The intensity of the link is choosed using uniform distribution between 0 and 2* \p i.
+ * Each \ref Neuron will expect to receive the inputs of n other neurons, calculated with \ref calculate_connections.
+ * The intensity of the link is picked at random using uniform distribution between 0 and 2* \p i.
  * The sending neurons will be picked at random within \ref neurons, but as a \ref Neuron can only send
  * signal to a unique one, the expected number of connection may not be reached.
- * \param lambda (double): mean value of Poisson distribution.
- * \param i (double): mean value of the uniform distribution (with bounds 0 and 2*i).
+ * \param connectivity (double): mean value of connectivity.
+ * \param i (double): mean value of the uniform distribution (with bounds 0 and 2*i)
+ * \param model (std::string): model to pick number of links at random.
  */
     void random_connect(const double& connectivity, const double &i, std::string &model);
 /*!
@@ -107,6 +108,12 @@ public:
  *\return a vector of pair {neuron index, link intensity}.
 */
 	std::vector<std::pair<size_t, double>> find_neighbours(const size_t &n);
+/*!
+ * Calculate the sum of intensity of all neurons connected to neuron \p n.
+ *\param n : the index of the receiving neuron.
+ *\return the valence of neuron \p n.
+*/
+	double valence(const size_t &n);
 	
 ///@}
 	

@@ -82,7 +82,7 @@ void Simulation::print(const int& t)
       *outstr << std::endl;
 }
 
-void Simulation::header()
+void Simulation::header_sample()
 {
       std::ostream *outstr = &std::cout;
       if (samplefile.is_open()) outstr = &samplefile;
@@ -95,40 +95,41 @@ void Simulation::header()
       *outstr << std::endl;
 }
 
-void Simulation::header_param()
-{
-    std::ostream *outstr = &std::cout;
-    if (paramfile.is_open()) outstr = &paramfile;
-
-       *outstr << "Type" << "\t" << "\t" << "a" << "\t" << "\t" << "\t" << "b"
-       << "\t" << "\t" << "\t" << "c" << "\t" << "\t" << "\t" << "d"
-       << "\t" << "\t" << "Inhibitory" << "\t"
-       << "degree" << "\t" << "\t" << "valence" ;
-      *outstr << std::endl;
-}
-
 void Simulation::print_parameters()
 {
-	  std::ostream *outstr = &std::cout;
+	std::ostream *outstr = &std::cout;
     if (paramfile.is_open()) outstr = &paramfile;
-size_t i(0);
-char inhibitory;
+    
+    // Print of the header
+    *outstr << "Type" << "\t" << "a" << "\t" << "b" << "\t" << "c" << "\t" << "d" << "\t" << "Inhibitory" << "\t" << "degree" << "\t" << "valence";
+    *outstr << std::endl;
 
-    for (auto n : network->get_neurons()) {
+	//Usefull variable
+	char inhibitory;
+	Neuron* neuron = nullptr;
 
-if (network->neuron_firing(network->get_neurons()[i])) { inhibitory = '1'; } else { inhibitory = '0'; } ;
+    for (size_t i(0); i<network->get_neurons().size(); ++i) {
+		  // Simplified notation
+		  neuron = &network->get_neurons()[i];
+		  
+		  // Is the neuron inhibitory or excitatory 
+		  if (neuron->get_params().excit) inhibitory = '0'; 
+		  else inhibitory = '1';
 
-      *outstr << network->get_neurons()[i].get_type()
-      << "\t" << "\t" << network->get_neurons()[i].get_params().a
-      << "\t" << "\t"  << network->get_neurons()[i].get_params().b
-      << "\t" << "\t"  << network->get_neurons()[i].get_params().c
-      << "\t" << "\t"  << network->get_neurons()[i].get_params().d
-      << "\t" << "\t"  << inhibitory
-      << "\t" << "\t"  << network->calculate_connections(connectivity , model)
-      << "\t" << "\t"  << network->total_current(i) ;
-      *outstr << std::endl;
-      ++i;
+		  // Print the parameters
+		  *outstr << neuron->get_type()
+		  << "\t" << neuron->get_params().a
+		  << "\t" << neuron->get_params().b
+		  << "\t" << neuron->get_params().c
+		  << "\t" << neuron->get_params().d
+		  << "\t" << inhibitory
+		  << "\t" << network->find_neighbours(i).size()
+		  << "\t" << network->valence(i);
+		  *outstr << std::endl;
       }
+    
+    // The file is closed
+    if (paramfile.is_open()) paramfile.close();
 }
 
 void Simulation::print_sample(const int& t)
@@ -156,11 +157,9 @@ void Simulation::print_properties(const std::string& type)
 
 void Simulation::run()
 {
-	this->header();  // print a header in sample file
-  this->header_param();   // print a header in parameters file
-
-  // this will be called once, at the beginning
-  this->print_parameters();
+	// this will be called once, at the beginning
+	this->header_sample();  // print a header in sample file
+    this->print_parameters();
 
 	// for each step of the simulation, first the network is updated by updating each neurons of the network
 	// then the results are printed in the output files
@@ -173,8 +172,6 @@ void Simulation::run()
 	// the output files are closed
 	if (outfile.is_open()) outfile.close();
 	if (samplefile.is_open()) samplefile.close();
-  if (paramfile.is_open()) paramfile.close();
-
 }
 
 Simulation::~Simulation()

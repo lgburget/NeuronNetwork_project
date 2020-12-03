@@ -17,8 +17,8 @@
  * - \ref number : total number of neurons,
  * - \ref connectivity : average connectivity of a neuron,
  * - \ref intensity : average intensity of connections,
- * - \ref prop_exc : fraction of excitatory neurons in the network,
- * - \ref outfile : output file
+ * - \ref model : choosen model for random picking
+ * - \ref n_types : proportions of each type of neurons
 */
 
 class Simulation {
@@ -48,7 +48,17 @@ public:
  * each simulation step.
  */
 ///@{
+/*!
+ * \ref run is the function that performs the simulation. It iterates on the simulation time and for each step, first updates the neuron \ref Network, then prints the results using \ref print.
+ */
+		void run();
+///@}
 
+/*! @name Printing the output files
+ * 3 output files are printed: \ref print spots the firing neurons at each simulation step, \ref print_sample prints the properties of some neurons at each simulation steps, 
+ * and \ref print_parameters prints parameters of each \ref Neuron.
+ */
+///@{
 /*!
  * Print the results of the simulation in the output file
  */
@@ -56,24 +66,19 @@ public:
 /*!
  * Print a header for function \ref print_sample
  */
-		void header();
+		void header_sample();
 /*!
- * Print a header for function \ref print_param
- */
-		void header_param();
-
-/*!
- * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step
+ * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step using \ref print_properties
  */
 		void print_sample(const int& t);
-		void print_properties(const std::string& type);
-
-		void print_parameters();
-
 /*!
- * \ref run is the function that performs the simulation. It iterates on the simulation time and for each step, first updates the neuron \ref Network, then prints the results using \ref print.
+ * Helper function for \ref print_sample
  */
-		void run();
+		void print_properties(const std::string& type);
+/*!
+ * Print the parameters of every neurons in the \ref Network
+ */
+		void print_parameters();
 ///@}
 
 
