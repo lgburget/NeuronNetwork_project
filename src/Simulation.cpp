@@ -6,7 +6,7 @@ Simulation::Simulation(int argc, char **argv)
      allowed.push_back("poisson");
      allowed.push_back("over-dispersed");
      TCLAP::ValuesConstraint<std::string> allowed_models(allowed);
-     
+
      try {
 		// get the parameter in the command line
         TCLAP::CmdLine cmd("Neuron Network simulation");
@@ -30,7 +30,8 @@ Simulation::Simulation(int argc, char **argv)
         cmd.add(ofile);
         TCLAP::ValueArg<std::string> sfile("s", "sample", "sample output file name", false, "sample_file.txt", "string");
         cmd.add(sfile);
-
+        TCLAP::ValueArg<std::string> pfile("p", "parameters", "parameters output file name", false, "param_file.txt", "string");
+        cmd.add(pfile);
         cmd.parse(argc, argv);
 
 		//Check the values of parameters get in the command line
@@ -42,7 +43,8 @@ Simulation::Simulation(int argc, char **argv)
         if (outfname.length()) outfile.open(outfname, std::ios_base::out);
         outfname = sfile.getValue();
         if (outfname.length()) samplefile.open(outfname, std::ios_base::out);
-        
+        outfname = pfile.getValue();
+        if (outfname.length()) paramfile.open(outfname, std::ios_base::out);
 
         // Setting of parameters into attributs if simulation
         endtime = time.getValue();
@@ -64,11 +66,10 @@ Simulation::Simulation(int argc, char **argv)
      } ;
 }
 
-
 void Simulation::print(const int& t)
 {
-      std::ostream *outstr = &std::cout;
-      if (outfile.is_open()) outstr = &outfile;
+    std::ostream *outstr = &std::cout;
+    if (outfile.is_open()) outstr = &outfile;
 
 	  *outstr << t << " ";
       for (auto n : network->get_neurons()) {
@@ -81,17 +82,53 @@ void Simulation::print(const int& t)
       *outstr << std::endl;
 }
 
-void Simulation::header() 
-{	
+void Simulation::header()
+{
       std::ostream *outstr = &std::cout;
       if (samplefile.is_open()) outstr = &samplefile;
-      
+
       if (network->is_type("RS")) *outstr << "\t" << "RS.v" << "\t" << "RS.u" << "\t" << "RS.I" << "\t";
       if (network->is_type("IB")) *outstr << "\t" << "IB.v" << "\t" << "IB.u" << "\t" << "IB.I" << "\t";
       if (network->is_type("FS")) *outstr << "\t" << "FS.v" << "\t" << "FS.u" << "\t" << "FS.I" << "\t";
       if (network->is_type("LTS")) *outstr << "\t" << "LTS.v" << "\t" << "LTS.u" << "\t" << "LTS.I" << "\t";
       if (network->is_type("RZ")) *outstr << "\t" << "RZ.v" << "\t" << "RZ.u" << "\t" << "RZ.I" << "\t";
       *outstr << std::endl;
+}
+
+void Simulation::header_param()
+{
+    std::ostream *outstr = &std::cout;
+    if (paramfile.is_open()) outstr = &paramfile;
+
+       *outstr << "Type" << "\t" << "\t" << "a" << "\t" << "\t" << "\t" << "b"
+       << "\t" << "\t" << "\t" << "c" << "\t" << "\t" << "\t" << "d"
+       << "\t" << "\t" << "Inhibitory" << "\t"
+       << "degree" << "\t" << "\t" << "valence" ;
+      *outstr << std::endl;
+}
+
+void Simulation::print_parameters()
+{
+	  std::ostream *outstr = &std::cout;
+    if (paramfile.is_open()) outstr = &paramfile;
+size_t i(0);
+char inhibitory;
+
+    for (auto n : network->get_neurons()) {
+
+if (network->neuron_firing(network->get_neurons()[i])) { inhibitory = '1'; } else { inhibitory = '0'; } ;
+
+      *outstr << network->get_neurons()[i].get_type()
+      << "\t" << "\t" << network->get_neurons()[i].get_params().a
+      << "\t" << "\t"  << network->get_neurons()[i].get_params().b
+      << "\t" << "\t"  << network->get_neurons()[i].get_params().c
+      << "\t" << "\t"  << network->get_neurons()[i].get_params().d
+      << "\t" << "\t"  << inhibitory
+      << "\t" << "\t"  << network->calculate_connections(connectivity , model)
+      << "\t" << "\t"  << network->total_current(i) ;
+      *outstr << std::endl;
+      ++i;
+      }
 }
 
 void Simulation::print_sample(const int& t)
@@ -112,7 +149,7 @@ void Simulation::print_properties(const std::string& type)
 {
 	std::ostream *outstr = &std::cout;
     if (samplefile.is_open()) outstr = &samplefile;
-    
+
 	size_t n = network->find_first_neuron(type);
 	*outstr << "\t" << network->get_potential(n) << "\t" << network->get_recovery(n) << "\t" << network->get_current(n) << "\t";
 }
@@ -120,7 +157,11 @@ void Simulation::print_properties(const std::string& type)
 void Simulation::run()
 {
 	this->header();  // print a header in sample file
-	
+  this->header_param();   // print a header in parameters file
+
+  // this will be called once, at the beginning
+  this->print_parameters();
+
 	// for each step of the simulation, first the network is updated by updating each neurons of the network
 	// then the results are printed in the output files
 	for (int t(1); t<=endtime; ++t) {
@@ -132,6 +173,8 @@ void Simulation::run()
 	// the output files are closed
 	if (outfile.is_open()) outfile.close();
 	if (samplefile.is_open()) samplefile.close();
+  if (paramfile.is_open()) paramfile.close();
+
 }
 
 Simulation::~Simulation()
