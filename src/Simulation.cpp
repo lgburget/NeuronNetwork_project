@@ -87,12 +87,35 @@ void Simulation::header_sample()
       std::ostream *outstr = &std::cout;
       if (samplefile.is_open()) outstr = &samplefile;
 
-      if (network->is_type("RS")) *outstr << "\t" << "RS.v" << "\t" << "RS.u" << "\t" << "RS.I" << "\t";
-      if (network->is_type("IB")) *outstr << "\t" << "IB.v" << "\t" << "IB.u" << "\t" << "IB.I" << "\t";
-      if (network->is_type("FS")) *outstr << "\t" << "FS.v" << "\t" << "FS.u" << "\t" << "FS.I" << "\t";
-      if (network->is_type("LTS")) *outstr << "\t" << "LTS.v" << "\t" << "LTS.u" << "\t" << "LTS.I" << "\t";
-      if (network->is_type("RZ")) *outstr << "\t" << "RZ.v" << "\t" << "RZ.u" << "\t" << "RZ.I" << "\t";
+      if (network->is_type("RS")) *outstr << "\t" << "RS.v" << "\t" << "RS.u" << "\t" << "RS.I";
+      if (network->is_type("IB")) *outstr << "\t" << "IB.v" << "\t" << "IB.u" << "\t" << "IB.I";
+      if (network->is_type("FS")) *outstr << "\t" << "FS.v" << "\t" << "FS.u" << "\t" << "FS.I";
+      if (network->is_type("LTS")) *outstr << "\t" << "LTS.v" << "\t" << "LTS.u" << "\t" << "LTS.I";
+      if (network->is_type("RZ")) *outstr << "\t" << "RZ.v" << "\t" << "RZ.u" << "\t" << "RZ.I";
       *outstr << std::endl;
+}
+
+void Simulation::print_sample(const int& t)
+{
+	  std::ostream *outstr = &std::cout;
+      if (samplefile.is_open()) outstr = &samplefile;
+
+	  *outstr << t ;
+	  if (network->is_type("RS")) print_properties("RS");
+      if (network->is_type("IB")) print_properties("IB");
+      if (network->is_type("FS")) print_properties("FS");
+      if (network->is_type("LTS")) print_properties("LTS");
+      if (network->is_type("RZ")) print_properties("RZ");
+      *outstr << std::endl;
+}
+
+void Simulation::print_properties(const std::string& type)
+{
+	std::ostream *outstr = &std::cout;
+    if (samplefile.is_open()) outstr = &samplefile;
+
+	size_t n = network->find_first_neuron(type);
+	*outstr << "\t" << network->get_potential(n) << "\t" << network->get_recovery(n) << "\t" << network->get_current(n);
 }
 
 void Simulation::print_parameters()
@@ -130,29 +153,6 @@ void Simulation::print_parameters()
     
     // The file is closed
     if (paramfile.is_open()) paramfile.close();
-}
-
-void Simulation::print_sample(const int& t)
-{
-	  std::ostream *outstr = &std::cout;
-      if (samplefile.is_open()) outstr = &samplefile;
-
-	  *outstr << t ;
-	  if (network->is_type("RS")) print_properties("RS");
-      if (network->is_type("IB")) print_properties("IB");
-      if (network->is_type("FS")) print_properties("FS");
-      if (network->is_type("LTS")) print_properties("LTS");
-      if (network->is_type("RZ")) print_properties("RZ");
-      *outstr << std::endl;
-}
-
-void Simulation::print_properties(const std::string& type)
-{
-	std::ostream *outstr = &std::cout;
-    if (samplefile.is_open()) outstr = &samplefile;
-
-	size_t n = network->find_first_neuron(type);
-	*outstr << "\t" << network->get_potential(n) << "\t" << network->get_recovery(n) << "\t" << network->get_current(n) << "\t";
 }
 
 void Simulation::run()
