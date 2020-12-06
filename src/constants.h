@@ -43,5 +43,5 @@ _SIMULERR_(OUTPUT_ERROR, 30)
 #define _Simulation_Time_ 30.
 #define _Connectivity_ 30.
 #define _Intensity_ 25.
-#define _Delta_T_ 0.2
+#define _Delta_T_ 0.5
 #define _Discharge_Threshold_ 30
