@@ -31,7 +31,7 @@ public:
  * \ref Neuron_types is containing all the parameters associated with each type of \ref Neuron.
  */
 ///@{
-	Neuron(const std::string &type, const std::vector<double> &n);
+	Neuron(const std::string &type, const double &delta);
 	static const std::map<std::string, Neuron_parameters> Neuron_types;
 ///@}
 /*! @name Neuron states

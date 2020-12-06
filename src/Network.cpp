@@ -5,12 +5,6 @@ Network::Network()
 
 Network::Network(size_t number, std::string n_types, double d, double connectivity, std::string model, double intensity)
 {
-	// Initialisation of the noises
-	for(int i(0); i<4; ++i) {
-		double x_noise = _RNG->uniform_double(1.0 - d, 1.0 + d);
-		noises.push_back(x_noise);
-	}
-
 	// Fonction that extract types proportions from a given n_types string
 	extract_types(n_types, number);
 
@@ -26,35 +20,35 @@ Network::Network(size_t number, std::string n_types, double d, double connectivi
 	int stop = nb_RS;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("RS", noises);
+		Neuron n("RS", d);
 		neurons.push_back(n);
 	}
 	start += nb_RS;
 	stop += nb_IB;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("IB", noises);
+		Neuron n("IB", d);
 		neurons.push_back(n);
 	}
 	start += nb_IB;
 	stop += nb_FS;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("FS", noises);
+		Neuron n("FS", d);
 		neurons.push_back(n);
 	}
 	start += nb_FS;
 	stop += nb_LTS;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("LTS", noises);
+		Neuron n("LTS", d);
 		neurons.push_back(n);
 	}
 	start += nb_LTS;
 	stop += nb_RZ;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("RZ", noises);
+		Neuron n("RZ", d);
 		neurons.push_back(n);
 	}
 

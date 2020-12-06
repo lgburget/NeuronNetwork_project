@@ -8,15 +8,26 @@ const std::map<std::string, Neuron_parameters> Neuron::Neuron_types {
     {"RZ",  {.1,  .26, -65, 2,   true}}
 };
 
-Neuron::Neuron(const std::string &type, const std::vector<double> &n) : curr_(0.0)
+Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)
 {
+	// type proportions
 	n_type = type;
-	double a = Neuron_types.at(type).a * n[0];
-	double b = Neuron_types.at(type).b * n[1];
-	double c = Neuron_types.at(type).c * n[2];
-	double d = Neuron_types.at(type).d * n[3];
+	
+	// picking parameters a,b,c and d based on the value of Neuron_types and multiplied by a random noise
+	double a,b,c,d;
+	double noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
+	a = Neuron_types.at(type).a * noise;
+	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
+	b = Neuron_types.at(type).b * noise;
+	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
+	c = Neuron_types.at(type).c * noise;
+	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
+	d = Neuron_types.at(type).d * noise;
+	
+	// type of neuron = inhibitory or excitatory
 	bool excit = Neuron_types.at(type).excit;
 	
+	// setting the parameters and 
 	this->set_params ({a,b,c,d,excit});				// set the parameters of neuron
 	this->set_potential(-65);
 	this->set_recovery (b*pot_);
