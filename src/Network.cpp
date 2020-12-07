@@ -106,7 +106,7 @@ int Network::calculate_connections(double connectivity, std::string model)
 
 bool Network::add_link(const size_t& n_r, const size_t& n_s, double i)
 {
-	if(((n_r or n_s)>neurons.size()) or n_r==n_s) return false;			// check that the neurons exist and that the two neurons are not actually the same neuron.
+	if((n_r>=neurons.size()) or (n_s>=neurons.size()) or (n_r==n_s)) return false;			// check that the neurons exist and that the two neurons are not actually the same neuron.
 	if (not links.count({n_r,n_s}))										// check that the map doesn't already contains a link for these neurons.
 	{
 		links[{n_r,n_s}] = i;
@@ -207,13 +207,17 @@ double Network::total_current(const size_t &n)
 	return current;
 }
 
-
-
-
 void Network::update()
 {
+	std::vector<size_t> firing_neurons(0);				// creation of a temporary vector to store firing neurons and to update them after the others
 	for (size_t i(0); i<neurons.size(); ++i) {
-		neurons[i].set_current(total_current(i));
-		neurons[i].equation();
+		if(neurons[i].firing()) firing_neurons.push_back(i);			// pushes firing neurons into the temporary vector
+		else { 
+			neurons[i].set_current(total_current(i));
+			neurons[i].equation();
 		}
+	}
+	if(not firing_neurons.empty()) {								// the firing neurons are then updated
+		for(auto n : firing_neurons) neurons[n].equation();
+	}
 }
