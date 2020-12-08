@@ -166,7 +166,7 @@ private:
 	{"IB",  0.0},
 	{"FS",  0.0},
 	{"LTS", 0.0},
-	{"RZ",  0.0}
+	{"CH",  0.0}
 	};
 /*!
  * List of the parameters' noises

@@ -13,7 +13,7 @@ Network::Network(size_t number, std::string n_types, double d, double connectivi
 	int nb_IB  = (int)floor(number*types_proportions["IB"]);
 	int nb_FS  = (int)floor(number*types_proportions["FS"]);
 	int nb_LTS = (int)floor(number*types_proportions["LTS"]);
-	int nb_RZ  = (int)floor(number*types_proportions["RZ"]);
+	int nb_CH  = (int)floor(number*types_proportions["CH"]);
 
 	// creation of the good number of each type of neurons
 	int start = 0;
@@ -45,10 +45,10 @@ Network::Network(size_t number, std::string n_types, double d, double connectivi
 		neurons.push_back(n);
 	}
 	start += nb_LTS;
-	stop += nb_RZ;
+	stop += nb_CH;
 
 	for (int i(start); i<stop; ++i) {
-		Neuron n("RZ", d);
+		Neuron n("CH", d);
 		neurons.push_back(n);
 	}
 

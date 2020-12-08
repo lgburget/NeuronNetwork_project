@@ -5,7 +5,7 @@ const std::map<std::string, Neuron_parameters> Neuron::Neuron_types {
     {"IB",  {.02, .2,  -55, 4,   true}},
     {"FS",  {.1,  .2,  -65, 2,   false}},
     {"LTS", {.02, .25, -65, 2,   false}},
-    {"RZ",  {.1,  .26, -65, 2,   true}}
+    {"CH",  {.02, .2,  -50, 2,   true}}
 };
 
 Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)

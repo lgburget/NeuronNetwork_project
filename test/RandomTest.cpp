@@ -141,21 +141,21 @@ TEST(Network, Parsing) {
 	EXPECT_EQ(50, count_RS);
 	EXPECT_EQ(50, count_FS);
 	
-	Network net2(100, "FS:0.2, RS:0.4, LTS:0.1, RZ:0.7", 0., 5, "constant", 1);
+	Network net2(100, "FS:0.2, RS:0.4, LTS:0.1, CH:0.7", 0., 5, "constant", 1);
 	count_RS = 0;
 	count_FS = 0;
 	int count_LTS = 0;
-	int count_RZ = 0;
+	int count_CH = 0;
 	for( auto n : net2.get_neurons()) {
 		if(n.get_type() == "RS") ++count_RS;
 		if(n.get_type() == "FS") ++count_FS;
 		if(n.get_type() == "LTS") ++count_LTS;
-		if(n.get_type() == "RZ") ++count_RZ;
+		if(n.get_type() == "CH") ++count_CH;
 	}
 	EXPECT_EQ(0, count_RS);
 	EXPECT_EQ(20, count_FS);
 	EXPECT_EQ(10, count_LTS);
-	EXPECT_EQ(70, count_RZ);
+	EXPECT_EQ(70, count_CH);
 	
 	Network net3(100, "FS:0.2, RS:0.4", 0., 5, "constant", 1);
 	count_RS = 0;

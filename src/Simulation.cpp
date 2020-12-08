@@ -12,14 +12,12 @@ Simulation::Simulation(int argc, char **argv)
         TCLAP::CmdLine cmd("Neuron Network simulation");
         TCLAP::ValueArg<size_t> neuron("n", "number", "Number of Neuron", false, _Numbers_ , "size_t");
         cmd.add(neuron);
-        //
         TCLAP::ValueArg<std::string> types("T", "types", "Proportions of each type", false, "", "string");
         cmd.add(types);
         TCLAP::ValueArg<double> delta("d", "delta", "delta on noise", false, _Delta_, "double");
         cmd.add(delta);
         TCLAP::ValueArg<std::string> connectivity_model("M", "model", "dispersion model", false, "poisson", &allowed_models );
         cmd.add(connectivity_model);
-        //
         TCLAP::ValueArg<int> time("t", "time", "Total simulation Time", false, _Simulation_Time_ , "int");
         cmd.add(time);
         TCLAP::ValueArg<double> lambda("c", "lambda", "Average Connectivity", false, _Connectivity_, "double");
@@ -91,7 +89,7 @@ void Simulation::header_sample()
       if (network->is_type("IB")) *outstr << "\t" << "IB.v" << "\t" << "IB.u" << "\t" << "IB.I";
       if (network->is_type("FS")) *outstr << "\t" << "FS.v" << "\t" << "FS.u" << "\t" << "FS.I";
       if (network->is_type("LTS")) *outstr << "\t" << "LTS.v" << "\t" << "LTS.u" << "\t" << "LTS.I";
-      if (network->is_type("RZ")) *outstr << "\t" << "RZ.v" << "\t" << "RZ.u" << "\t" << "RZ.I";
+      if (network->is_type("CH")) *outstr << "\t" << "CH.v" << "\t" << "CH.u" << "\t" << "CH.I";
       *outstr << std::endl;
 }
 
@@ -105,7 +103,7 @@ void Simulation::print_sample(const int& t)
       if (network->is_type("IB")) print_properties("IB");
       if (network->is_type("FS")) print_properties("FS");
       if (network->is_type("LTS")) print_properties("LTS");
-      if (network->is_type("RZ")) print_properties("RZ");
+      if (network->is_type("CH")) print_properties("CH");
       *outstr << std::endl;
 }
 
