@@ -64,112 +64,30 @@ Simulation::Simulation(int argc, char **argv)
      } ;
 }
 
-void Simulation::print(const int& t)
-{
-    std::ostream *outstr = &std::cout;
-    if (outfile.is_open()) outstr = &outfile;
-
-	  *outstr << t << " ";
-      for (auto n : network->get_neurons()) {
-            if (network->neuron_firing(n)){
-                *outstr << '1' << " ";        // if the neuron is firing, print 1 in the column of the neuron at the corresponding time
-            } else {
-                *outstr << '0' << " ";		// if the neuron is not firing, same but print a 0.
-            }
-      }
-      *outstr << std::endl;
-}
-
-void Simulation::header_sample()
-{
-      std::ostream *outstr = &std::cout;
-      if (samplefile.is_open()) outstr = &samplefile;
-
-      if (network->is_type("RS")) *outstr << "\t" << "RS.v" << "\t" << "RS.u" << "\t" << "RS.I";
-      if (network->is_type("IB")) *outstr << "\t" << "IB.v" << "\t" << "IB.u" << "\t" << "IB.I";
-      if (network->is_type("FS")) *outstr << "\t" << "FS.v" << "\t" << "FS.u" << "\t" << "FS.I";
-      if (network->is_type("LTS")) *outstr << "\t" << "LTS.v" << "\t" << "LTS.u" << "\t" << "LTS.I";
-      if (network->is_type("CH")) *outstr << "\t" << "CH.v" << "\t" << "CH.u" << "\t" << "CH.I";
-      *outstr << std::endl;
-}
-
-void Simulation::print_sample(const int& t)
-{
-	  std::ostream *outstr = &std::cout;
-      if (samplefile.is_open()) outstr = &samplefile;
-
-	  *outstr << t ;
-	  if (network->is_type("RS")) print_properties("RS");
-      if (network->is_type("IB")) print_properties("IB");
-      if (network->is_type("FS")) print_properties("FS");
-      if (network->is_type("LTS")) print_properties("LTS");
-      if (network->is_type("CH")) print_properties("CH");
-      *outstr << std::endl;
-}
-
-void Simulation::print_properties(const std::string& type)
-{
-	std::ostream *outstr = &std::cout;
-    if (samplefile.is_open()) outstr = &samplefile;
-
-	size_t n = network->find_first_neuron(type);
-	*outstr << "\t" << network->get_potential(n) << "\t" << network->get_recovery(n) << "\t" << network->get_current(n);
-}
-
-void Simulation::print_parameters()
-{
-	std::ostream *outstr = &std::cout;
-    if (paramfile.is_open()) outstr = &paramfile;
-    
-    // Print of the header
-    *outstr << "Type" << "\t" << "a" << "\t" << "b" << "\t" << "c" << "\t" << "d" << "\t" << "Inhibitory" << "\t" << "degree" << "\t" << "valence";
-    *outstr << std::endl;
-
-	//Usefull variable
-	char inhibitory;
-	Neuron* neuron = nullptr;
-
-    for (size_t i(0); i<network->get_neurons().size(); ++i) {
-		  // Simplified notation
-		  neuron = &network->get_neurons()[i];
-		  
-		  // Is the neuron inhibitory or excitatory 
-		  if (neuron->get_params().excit) inhibitory = '0'; 
-		  else inhibitory = '1';
-
-		  // Print the parameters
-		  *outstr << neuron->get_type()
-		  << "\t" << neuron->get_params().a
-		  << "\t" << neuron->get_params().b
-		  << "\t" << neuron->get_params().c
-		  << "\t" << neuron->get_params().d
-		  << "\t" << inhibitory
-		  << "\t" << network->find_neighbours(i).size()
-		  << "\t" << network->valence(i);
-		  *outstr << std::endl;
-      }
-    
-    // The file is closed
-    if (paramfile.is_open()) paramfile.close();
-}
-
 void Simulation::run()
 {
 	// this will be called once, at the beginning
-	this->header_sample();  // print a header in sample file
-    this->print_parameters();
-
+	std::ostream *outstr_param;
+	std::ostream *outstr_sample;
+	std::ostream *outstr_print;
+    if (paramfile.is_open()) outstr_param = &paramfile;
+    if (samplefile.is_open()) outstr_sample = &samplefile;
+    if (outfile.is_open()) outstr_print = &outfile;
+    network->header_sample(outstr_sample);								// print a header in sample file
+    network->print_parameters(outstr_param);							// print parameters of every neuron
 	// for each step of the simulation, first the network is updated by updating each neurons of the network
 	// then the results are printed in the output files
 	for (int t(1); t<=endtime; ++t) {
 		network->update();
-		this->print(t);
-		this->print_sample(t);
-	}
+		network->print(t, outstr_print);
+		network->print_sample(t, outstr_sample);
 
+	}
+ 
 	// the output files are closed
 	if (outfile.is_open()) outfile.close();
 	if (samplefile.is_open()) samplefile.close();
+	if (paramfile.is_open()) paramfile.close();
 }
 
 Simulation::~Simulation()

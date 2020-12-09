@@ -66,6 +66,9 @@ public:
 	void set_current(const double& curr) {curr_ = curr;}
 	double get_current() const {return curr_;}
 	std::string get_type() const {return n_type;}
+	std::string params_to_print() const;								//Doxyfile à partir de là
+	std::string variables_to_print() const;								
+	void reset() {pot_ = params_.c; rec_ += params_.d;}					//jusqu'à ici.
 ///@}
 private:
 /*! @name Cellular properties

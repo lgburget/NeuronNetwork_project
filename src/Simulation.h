@@ -62,23 +62,23 @@ public:
 /*!
  * Print the results of the simulation in the output file
  */
-		void print(const int& t);
+
 /*!
  * Print a header for function \ref print_sample
  */
-		void header_sample();
+
 /*!
  * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step using \ref print_properties
  */
-		void print_sample(const int& t);
+
 /*!
  * Helper function for \ref print_sample
  */
-		void print_properties(const std::string& type);
+
 /*!
  * Print the parameters of every neurons in the \ref Network
  */
-		void print_parameters();
+
 ///@}
 
 

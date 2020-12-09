@@ -35,13 +35,26 @@ Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)
 
 void Neuron::equation()
 {
-	if(firing())
-	{
-		pot_ = params_.c;
-		rec_ += params_.d;
-	}else{
-		pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
-		pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
-		rec_ += 2*_Delta_T_*params_.a*(params_.b*pot_-rec_);
-	}
+	pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
+	pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
+	rec_ += 2*_Delta_T_*params_.a*(params_.b*pot_-rec_);
+}
+
+std::string Neuron::params_to_print() const
+{
+	std::stringstream ss;
+	ss << n_type
+	   << "\t" << params_.a
+	   << "\t" << params_.b
+	   << "\t" << params_.c
+	   << "\t" << params_.d
+	   << "\t" << (int)params_.excit;									// returns 1 if true and 0 if false.
+	return ss.str();
+}
+
+std::string Neuron::variables_to_print() const 
+{
+	std::stringstream ss;
+	ss << "\t" << pot_ << "\t" << rec_ << "\t" << curr_;
+	return ss.str();
 }

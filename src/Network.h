@@ -27,7 +27,7 @@ public:
  * The constructor creates all the neurons of the network and links them randomly using \ref random_connect.
  * The noises applied on the parameters of each \ref Neuron in the \ref Network are initialized with the user's parameter d 
  */
-	Network(size_t number, std::string n_types, double d, double connectivity, std::string model, double intensity);
+	Network(const size_t& number,const std::string& n_types, const double& d, const double& connectivity, const std::string& model, const double& intensity);
 
 /*!
  * Allows to extract from a string the proportion of each specific type of \ref Neuron
@@ -101,7 +101,7 @@ public:
  * \param i (double): mean value of the uniform distribution (with bounds 0 and 2*i)
  * \param model (std::string): model to pick number of links at random.
  */
-    void random_connect(const double& connectivity, const double &i, std::string &model);
+    void random_connect(const double& connectivity, const double &i, const std::string &model);
 /*!
  *Find all neurons connected with incomming connections to neuron \p n.
  *\param n : the index of the receiving neuron.
@@ -124,7 +124,7 @@ public:
 /*!
  *Tests if the neuron in parameter is firing
  */
-	bool neuron_firing (const Neuron &neuron_) const;
+	bool neuron_firing (const Neuron &neuron_) const {return neuron_.firing();}
 /*!
  *Tests if there is at least one \ref Neuron of type \p type in the network
  */
@@ -150,7 +150,11 @@ public:
  */
 	void update();
 ///@}
-
+	void print_parameters(std::ostream *outstr);						//Doxyfile a partir de là.
+	void print_sample(const int& t, std::ostream *outstr);
+	void print_properties(const std::string& type, std::ostream *outstr);
+	void print(const int& t, std::ostream *outstr);
+	void header_sample(std::ostream *outstr);							//jusqu'à ici.
 
 private:
 /*!
