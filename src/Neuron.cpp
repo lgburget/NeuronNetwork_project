@@ -25,7 +25,7 @@ Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)
 
 void Neuron::equation()
 {
-	pot_ += 0.5*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
+	pot_ += 0.5*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);					// updates two times the potential and one time the recovery
 	pot_ += 0.5*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
 	rec_ += params_.a*(params_.b*pot_-rec_);
 }

@@ -4,7 +4,7 @@
 
 /*! \class Network
  * A neuron network is a set of \ref Neuron and their connections.
- * Each \ref Neuron send a signal to a unique one, but can receive signal from several ones.
+ * Each \ref Neuron sends and receives signal from several other ones, thus creating a network.
  *
  * Neurons are identified by their index in the vector \ref neurons.
  *
@@ -24,8 +24,10 @@ public:
 ///@{
 	Network();
 /*!
- * The constructor creates all the neurons of the network and links them randomly using \ref random_connect.
- * The noises applied on the parameters of each \ref Neuron in the \ref Network are initialized with the user's parameter d 
+ * The constructor creates a defined \param number of neurons in the \ref Network and links them using \ref random_connect.
+ * The connections are defined by their distribution ( \param model), their average number per \ref Neuron ( \param connectivity) and their \param intensity. Each of these parameters are either chosen by the user or initialized by default
+ * The noises applied on the parameters of each \ref Neuron in the \ref Network are initialized with the user's parameter \param d.
+ * The proportions of each type of \ref Neuron are passed as parameter via the string \param n_types and are read using \ref extract_types
  */
 	Network(const size_t& number,const std::string& n_types, const double& d, const double& connectivity, const std::string& model, const double& intensity);
 
@@ -130,7 +132,7 @@ public:
  */
 	bool is_type(const std::string& type) const;
 /*!
- * finds the index of the first \ref Neuron of one type of neuron
+ * finds the index of the first \ref Neuron of one type of neuron passed as a parameter
  */
 	size_t find_first_neuron(const std::string& type) const;
 ///@} 
@@ -146,15 +148,35 @@ public:
 	double total_current(const size_t &n);
 
 /*!
+ * Principal function that updates the parameters of each \ref Neuron in the \ref Network
+ * It returns a vector containing the index of firing neurons to allow the \ref Simulation to have access to them.
  * In order to perform one time-step of the simulation, it updates twice the potential and once the recovery. 
  */
 	std::vector<size_t> update();
 ///@}
-	void print_parameters(std::ostream *outstr);						//Doxyfile a partir de là.
-	void print_sample(const int& t, std::ostream *outstr);
-	void print_properties(const std::string& type, std::ostream *outstr);
-	void header_sample(std::ostream *outstr);							//jusqu'à ici.
 
+/*! @name Generating the output
+ * \ref print_sample prints the properties of some neurons at each simulation steps, and \ref print_parameters prints parameters of each \ref Neuron.
+ */
+///@{
+/*!
+ * Print the parameters of every neurons in the \ref Network
+ */
+	void print_parameters(std::ostream *outstr);	
+/*!
+ * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step using \ref print_properties
+ * \param t is the 
+ */					
+	void print_sample(const int& t, std::ostream *outstr);
+/*!
+ * Helper function for \ref print_sample
+ */
+	void print_properties(const std::string& type, std::ostream *outstr);
+/*!
+ * Print a header for function \ref print_sample
+ */
+	void header_sample(std::ostream *outstr);							
+///@}
 private:
 /*!
  * Set of \ref Neuron that composes the network. 
@@ -163,6 +185,7 @@ private:
 
 /*!
  * Set of proportions of each specific type of \ref Neuron
+ * This set is initialized with the function \ref extract_types
  */
 	std::map<std::string, double> types_proportions {
 	{"RS",  0.0}, 

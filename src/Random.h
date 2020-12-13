@@ -35,7 +35,6 @@ public:
     template<class T> void exponential(T&, const double rate=1);
     int poisson(double mean=1);
     template<class T> void poisson(T&, double mean=1);
-    //int discrete(double p1=0.5, double p2=0.5, double p3=0.0);
 ///@}
 
 /*! @name Auxiliary function
@@ -65,11 +64,6 @@ template<class T> void RandomNumbers::normal(T &res, double mean, double sd) {
     std::normal_distribution<> norm(mean, sd);
     for (auto I=res.begin(); I!=res.end(); I++) *I = norm(rng);
 }
-
-/*template<class T> void RandomNumbers::exponential(T &res, const double rate) {
-	std::exponential_distribution<> exp(rate);
-	for (auto I=res.begin(); I!=res.end(); I++) *I = exp(rng);
- }*/
 
 template<class T> void RandomNumbers::poisson(T &res, double mean) {
     std::poisson_distribution<> poi(mean);

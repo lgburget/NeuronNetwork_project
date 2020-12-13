@@ -33,9 +33,3 @@ RandomNumbers::RandomNumbers(unsigned long int s) : seed(s) {
 	std::poisson_distribution<> poi(mean);
 	return poi(rng);
  }
- 
- /*int RandomNumbers::discrete(double p1, double p2, double p3) {
-	 std::discrete_distribution<> dis{p1, p2, p3};
-	 return dis(rng);
- }*/
- 

@@ -15,10 +15,11 @@
  * The parameters of the Simulation are:
  * - \ref endtime : total number of time-steps,
  * - \ref number : total number of neurons,
- * - \ref connectivity : average connectivity of a neuron,
+ * - \ref connectivity : average connectivity of a \ref Neuron,
  * - \ref intensity : average intensity of connections,
  * - \ref model : choosen model for random picking
- * - \ref n_types : proportions of each type of neurons
+ * - \ref n_types : proportions of each type of \ref Neuron
+ * - \ref d : margin applied to the the parameters of each \ref Neuron 
 */
 
 class Simulation {
@@ -28,9 +29,9 @@ public:
 */
 ///@{
 /*!
- *  First the command-line options are extracted.
+ * First the command-line options are extracted.
  *
- * Their valuee are then verified and if there is no abberant value, attributes are initialized with them.
+ * Their value are then verified and if there is no abberant value, attributes are initialized with them.
  *
  * Finally, the neuron \ref Network of the similation is created using the simulation parameters.
  */
@@ -44,43 +45,19 @@ public:
 
 
 /*! @name Running the simulation
- * The simulation is performed by calling \ref run, which updates the neuron \ref Network and calls \ref print at
- * each simulation step.
+ * The simulation is performed by calling \ref run, which updates the neuron \ref Network , calls for the print methods of the \ref Network and prints 
+ * the state of each \ref Neuron each simulation step.
  */
 ///@{
 /*!
- * \ref run is the function that performs the simulation. It iterates on the simulation time and for each step, first updates the neuron \ref Network, then prints the results using \ref print.
+ * \ref run is the function that performs the simulation. 
+ * It creates all the files that will be written on and calls for the printing fuctions of the \ref Network
+ * It iterates on the simulation time and for each step, first updates the neuron \ref Network, on the \ref outfile the state of each \ref Neuron,
+ * a 1 if it's firing and a 0 if it's not.
+ * Finally, this method closes the files when the \ref endtime has been attained 
  */
 		void run();
 ///@}
-
-/*! @name Printing the output files
- * 3 output files are printed: \ref print spots the firing neurons at each simulation step, \ref print_sample prints the properties of some neurons at each simulation steps, 
- * and \ref print_parameters prints parameters of each \ref Neuron.
- */
-///@{
-/*!
- * Print the results of the simulation in the output file
- */
-
-/*!
- * Print a header for function \ref print_sample
- */
-
-/*!
- * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step using \ref print_properties
- */
-
-/*!
- * Helper function for \ref print_sample
- */
-
-/*!
- * Print the parameters of every neurons in the \ref Network
- */
-
-///@}
-
 
 private:
 /*!
@@ -92,7 +69,7 @@ private:
  */
   		int endtime;
 /*!
- * Total number of \ref Neuron in the \ref network
+ * Total number of \ref Neuron in the \ref Network
  */
   		size_t number;
 /*!
@@ -104,7 +81,7 @@ private:
  */
 		double d;
 /*!
- * Possible_models defines the name of the different models for the connectivity
+ * Defines the names of the different models for the connectivity \ref model
  */
 		std::vector<std::string> allowed;
 /*!

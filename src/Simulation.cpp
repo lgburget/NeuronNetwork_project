@@ -2,6 +2,7 @@
 
 Simulation::Simulation(int argc, char **argv)
 {
+    // setting the allowed values for the model passed by the user
      allowed.push_back("constant");
      allowed.push_back("poisson");
      allowed.push_back("over-dispersed");
@@ -49,11 +50,9 @@ Simulation::Simulation(int argc, char **argv)
         number = neuron.getValue();
         connectivity = lambda.getValue();
         intensity = intens.getValue();
-        //
         n_types = types.getValue();
         d = delta.getValue();
         model = connectivity_model.getValue();
-        //
 
         // Creation of the neuron network
         network = new Network(number, n_types, d, connectivity, model, intensity);
@@ -66,7 +65,7 @@ Simulation::Simulation(int argc, char **argv)
 
 void Simulation::run()
 {
-	// this will be called once, at the beginning
+	// this will be called once, at the beginning of the simulation
 	std::ostream *outstr_param;
 	std::ostream *outstr_sample;
 	std::ostream *outstr_print;
