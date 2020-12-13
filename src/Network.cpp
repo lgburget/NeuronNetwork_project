@@ -142,7 +142,7 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 	std::vector<std::pair<size_t, double>> neighbours;
 	// iterator on the map links to find all links that contains neuron n as a receiving neuron
 	for (std::map<std::pair<size_t, size_t>, double>::iterator it=links.begin(); it!= links.end(); ++it) {
-		if (it->first.first == n and it->first.second <= neurons.size()) {
+		if (it->first.first == n and it->first.second < neurons.size()) {
 			neighbours.push_back(std::make_pair(it->first.second, it->second));
 		}
 	}
@@ -153,7 +153,7 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 double Network::valence(const size_t &n)
 {
 	double valence = 0.0;
-	for (auto link: find_neighbours(n)) {
+	for (const auto& link: find_neighbours(n)) {
 		if (neurons[link.first].get_params().excit) valence += link.second;
 		else valence -= link.second;
 	}
@@ -183,32 +183,34 @@ double Network::total_current(const size_t &n)
 	double noise = _RNG->normal(0,1);								    // external noise is picked at random
 	if (neurons[n].get_params().excit) current = 5.0*noise;
 	else current = 2.0*noise;
-
-	for (auto neighbour: find_neighbours(n)) {
+	for (const auto& neighbour : find_neighbours(n)) {
 		if (neurons[neighbour.first].firing()) {					    // check if neighbour is firing and thus sending a signal to neuron n
 			if (neurons[neighbour.first].get_params().excit) {
-					current+= (double)links[{n, neighbour.first}]*0.5;	// if firing and excitatory -> add half of the intensity of current
+					current+= neighbour.second*0.5;	// if firing and excitatory -> add half of the intensity of current
 				}
-			else current-=links[{n, neighbour.first}];					// if firing and inhibitory -> substract the intensity of the current
+			else current-=  neighbour.second;					// if firing and inhibitory -> substract the intensity of the current
 		}
 	}
 
 	return current;
 }
 
-void Network::update()
+std::vector<size_t> Network::update()
 {
 	std::vector<size_t> firing_neurons(0);					// creation of a temporary vector to store firing neurons and to update them after the others
 	for (size_t i(0); i<neurons.size(); ++i) {
 		if(neurons[i].firing()) {
-			firing_neurons.push_back(i);					// pushes firing neurons into the temporary vector$
-			neurons[i].reset();								// reset every firing neuron.
+			firing_neurons.push_back(i);					// pushes firing neurons into the temporary vector					
 		}
 		else {
 			neurons[i].set_current(total_current(i));
 			neurons[i].equation();
 		}
 	}
+		if(not firing_neurons.empty()) {								// the firing neurons are then updated
+		for(const auto& n : firing_neurons) neurons[n].reset();
+	}
+	return firing_neurons;
 }
 
 void Network::print_parameters(std::ostream *outstr)
@@ -242,19 +244,6 @@ void Network::print_properties(const std::string& type, std::ostream *outstr)
 {
 	size_t n = find_first_neuron(type);
 	*outstr << neurons[n].variables_to_print();
-}
-
-void Network::print(const int& t, std::ostream *outstr)
-{
-	  *outstr << t << " ";
-      for (auto n : neurons) {
-            if (n.firing()){
-                *outstr << '1' << " ";      // if the neuron is firing, print 1 in the column of the neuron at the corresponding time
-            } else {
-                *outstr << '0' << " ";		// if the neuron is not firing, same but print a 0.
-            }
-      }
-      *outstr << std::endl;
 }
 
 void Network::header_sample(std::ostream *outstr)

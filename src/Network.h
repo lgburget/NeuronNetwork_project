@@ -148,12 +148,11 @@ public:
 /*!
  * In order to perform one time-step of the simulation, it updates twice the potential and once the recovery. 
  */
-	void update();
+	std::vector<size_t> update();
 ///@}
 	void print_parameters(std::ostream *outstr);						//Doxyfile a partir de là.
 	void print_sample(const int& t, std::ostream *outstr);
 	void print_properties(const std::string& type, std::ostream *outstr);
-	void print(const int& t, std::ostream *outstr);
 	void header_sample(std::ostream *outstr);							//jusqu'à ici.
 
 private:

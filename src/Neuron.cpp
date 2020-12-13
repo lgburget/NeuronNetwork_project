@@ -10,34 +10,24 @@ const std::map<std::string, Neuron_parameters> Neuron::Neuron_types {
 
 Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)
 {
-	// type proportions
+	// type of the neuron
 	n_type = type;
 	
 	// picking parameters a,b,c and d based on the value of Neuron_types and multiplied by a random noise
-	double a,b,c,d;
-	double noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
-	a = Neuron_types.at(type).a * noise;
-	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
-	b = Neuron_types.at(type).b * noise;
-	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
-	c = Neuron_types.at(type).c * noise;
-	noise = _RNG->uniform_double(1.0 - delta, 1.0 + delta);
-	d = Neuron_types.at(type).d * noise;
-	
-	// type of neuron = inhibitory or excitatory
-	bool excit = Neuron_types.at(type).excit;
-	
-	// setting the parameters and 
-	this->set_params ({a,b,c,d,excit});				// set the parameters of neuron
-	this->set_potential(-65);
-	this->set_recovery (b*pot_);
+	set_params ({Neuron_types.at(type).a * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
+				 Neuron_types.at(type).b * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
+				 Neuron_types.at(type).c * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
+				 Neuron_types.at(type).d * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
+				 Neuron_types.at(type).excit});
+	set_potential(-65);
+	set_recovery (params_.b*pot_);
 }
 
 void Neuron::equation()
 {
-	pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
-	pot_ += _Delta_T_*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
-	rec_ += 2*_Delta_T_*params_.a*(params_.b*pot_-rec_);
+	pot_ += 0.5*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
+	pot_ += 0.5*(0.04*pot_*pot_+5*pot_+140-rec_+curr_);
+	rec_ += params_.a*(params_.b*pot_-rec_);
 }
 
 std::string Neuron::params_to_print() const

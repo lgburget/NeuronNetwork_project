@@ -78,10 +78,11 @@ void Simulation::run()
 	// for each step of the simulation, first the network is updated by updating each neurons of the network
 	// then the results are printed in the output files
 	for (int t(1); t<=endtime; ++t) {
-		network->update();
-		network->print(t, outstr_print);
+		std::vector<size_t> firing_n = network->update();
+		*outstr_print << t;
+		for (size_t i(0); i < network->get_neurons().size(); ++i) *outstr_print << " " << std::count(firing_n.begin(), firing_n.end(), i);
+		*outstr_print << std::endl;
 		network->print_sample(t, outstr_sample);
-
 	}
  
 	// the output files are closed
