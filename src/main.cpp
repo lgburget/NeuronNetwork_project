@@ -38,11 +38,12 @@ RandomNumbers *_RNG;
  * - the \b total \b time you want your simulation to last
  * - the \b average \b number \b of \b connection a random neuron have
  * - the \b average \b intensity \b of \b connection between two random neurons
+ * - the \b dispersion \b model for number of connection
  * - the \b proportion \b of \b each \b type \b of \b neurons within the network
- * - the \b files in which the results will be printed
+ * - the length of the \b intervall \b for \b neuron \b parameters to be picked at random in
+ * - the three \b files in which the results will be printed
  * 
  * If you don't provide these arguments, default parameters will be taken. 
- * 
  *
  */
  
