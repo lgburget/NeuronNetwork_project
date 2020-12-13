@@ -129,7 +129,7 @@ TEST(Neuron, firing) {
 	n2.set_potential(0.0);
 	EXPECT_EQ(false, n2.firing());
 	
-	n1.equation();
+	n1.reset();
 	EXPECT_EQ(n1.get_params().c, n1.get_potential());
 }
 
