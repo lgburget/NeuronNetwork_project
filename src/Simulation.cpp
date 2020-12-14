@@ -79,7 +79,7 @@ void Simulation::run()
 	for (int t(1); t<=endtime; ++t) {
 		std::vector<size_t> firing_n = network->update();
 		*outstr_print << t;
-		for (size_t i(0); i < network->get_neurons().size(); ++i) *outstr_print << " " << std::count(firing_n.begin(), firing_n.end(), i);
+		for (size_t i(0); i < number; ++i) *outstr_print << " " << std::count(firing_n.begin(), firing_n.end(), i);
 		*outstr_print << std::endl;
 		network->print_sample(t, outstr_sample);
 	}

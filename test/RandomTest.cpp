@@ -75,9 +75,6 @@ TEST(Network, addlink) {
 
 
 TEST(Network, linking) {
-	/*
-	Network net(5000, "FS:0.2,CH:0.2,RS:0.2", 0.1, 70, "poisson", 5);
-	*/
 	Network net1(100, "", 0., 5, "constant", 1);
 	double mean1 = (double)net1.get_links().size()/100;
 	EXPECT_EQ(mean1, 5.0);
@@ -197,7 +194,6 @@ TEST(Network, update) {
 	EXPECT_LT(min_ex_pot, net.get_potential(0));
 	EXPECT_GE(max_ex_pot, net.get_potential(0));
 }
-
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

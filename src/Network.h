@@ -74,7 +74,7 @@ public:
  * Provides access to the current of neuron \p n
  */
 	double get_current(const size_t& n) const { return neurons[n].get_current(); }
-	
+	size_t get_size() const { return neurons.size(); }
 /*!
  * Allows the test program to modify the potential of a \ref Neuron in the network
  * \param n (size_t): neuron to change potential
