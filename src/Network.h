@@ -24,10 +24,16 @@ public:
 ///@{
 	Network();
 /*!
- * The constructor creates a defined \param number of neurons in the \ref Network and links them using \ref random_connect.
- * The connections are defined by their distribution ( \param model), their average number per \ref Neuron ( \param connectivity) and their \param intensity. Each of these parameters are either chosen by the user or initialized by default
- * The noises applied on the parameters of each \ref Neuron in the \ref Network are initialized with the user's parameter \param d.
- * The proportions of each type of \ref Neuron are passed as parameter via the string \param n_types and are read using \ref extract_types
+ * The constructor creates a defined \p number of neurons in the \ref Network and links them using \ref random_connect.
+ * The connections are defined by their distribution ( \p model), their average number per \ref Neuron ( \p connectivity) and their \p intensity. Each of these parameters are either chosen by the user or initialized by default
+ * The noises applied on the parameters of each \ref Neuron in the \ref Network are initialized with the user's parameter \p d.
+ * The proportions of each type of \ref Neuron are passed as parameter via the string \p n_types and are read using \ref extract_types
+ * \param number: number: total number of \ref Neuron in the \ref Network
+ * \param n_types: string to be read, containing neuron type proportions
+ * \param d: defines the length of the interval for neuron parameters to be picked at random in
+ * \param connectivity: average number of connection for a neuron
+ * \param model: dispersion model to pick number of connection at random
+ * \param intensity: average intensity of connections
  */
 	Network(const size_t& number,const std::string& n_types, const double& d, const double& connectivity, const std::string& model, const double& intensity);
 
@@ -165,7 +171,8 @@ public:
 	void print_parameters(std::ostream *outstr);	
 /*!
  * Print the potential, recovery and current of the first \ref Neuron in the \ref Network at each simulation step using \ref print_properties
- * \param t is the 
+ * \param t is the simulation time step
+ * \param *outstr is the output stream for writing values
  */					
 	void print_sample(const int& t, std::ostream *outstr);
 /*!

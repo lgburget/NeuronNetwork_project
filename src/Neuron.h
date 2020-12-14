@@ -97,11 +97,11 @@ public:
  */	
 	std::string params_to_print() const;	
 /*!
- * Returns a string containing the recovery \ref _rec, potential \ref _pot and current \ref _curr of the \ref Neuron
+ * Returns a string containing the recovery \ref rec_, potential \ref pot_ and current \ref curr_ of the \ref Neuron
  */								
 	std::string variables_to_print() const;	
 /*!
- * Is used to reset the potential \ref _pot and the recovery \ref _rec . 
+ * Is used to reset the potential \ref pot_ and the recovery \ref rec_ . 
  * This function is called by the update in the \ref Network
  */							
 	void reset() {pot_ = params_.c; rec_ += params_.d;}					
