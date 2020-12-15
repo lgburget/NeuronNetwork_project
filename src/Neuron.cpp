@@ -12,7 +12,7 @@ Neuron::Neuron(const std::string &type, const double &delta) : curr_(0.0)
 {
 	// type of the neuron
 	n_type = type;
-	
+
 	// picking parameters a,b,c and d based on the value of Neuron_types and multiplied by a random noise
 	set_params ({Neuron_types.at(type).a * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
 				 Neuron_types.at(type).b * _RNG->uniform_double(1.0 - delta, 1.0 + delta),
@@ -34,17 +34,17 @@ std::string Neuron::params_to_print() const
 {
 	std::stringstream ss;
 	ss << n_type
-	   << "\t" << params_.a
-	   << "\t" << params_.b
-	   << "\t" << params_.c
-	   << "\t" << params_.d
-	   << "\t" << (int)params_.excit;									// returns 1 if true and 0 if false.
+	   << "\t" << "\t"<< params_.a
+	   << "\t" << "\t" << params_.b
+	   << "\t" << "\t"<< params_.c
+	   << "\t" << "\t" << params_.d
+	   << "\t" << "\t" << (int)params_.excit;									// returns 1 if true and 0 if false.
 	return ss.str();
 }
 
-std::string Neuron::variables_to_print() const 
+std::string Neuron::variables_to_print() const
 {
 	std::stringstream ss;
-	ss << "\t" << pot_ << "\t" << rec_ << "\t" << curr_;
+	ss << "           " << pot_  << "           "<< rec_ << "           "<< curr_;
 	return ss.str();
 }

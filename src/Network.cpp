@@ -130,7 +130,7 @@ void Network::random_connect(const double& connectivity, const double &i, const 
 		// The first link_number neurons of vector index will be connected to neuron j
 		int stop = 0;
 
-		for (size_t m(0); m<get_size() and stop<link_number; ++m) {	 				
+		for (size_t m(0); m<get_size() and stop<link_number; ++m) {
 			if (add_link(j,index[m],_RNG->uniform_double(0, 2*i))) ++stop;				// intensity of connection is picked at random
 		}
 	}
@@ -141,7 +141,7 @@ std::vector<std::pair<size_t, double>> Network::find_neighbours(const size_t &n)
 	std::vector<std::pair<size_t, double>> neighbours;
 	std::pair<size_t, int> key_low(n, 0);								// creating the first possible key corresponding to the neuron n
 	std::pair<size_t, int> key_up(n, get_size());						// creating the last possible key corresponding to the neuron n
-	Link::iterator itlow = links.lower_bound(key_low);					// create the lower iterator pointing on the first key of the neuron n 
+	Link::iterator itlow = links.lower_bound(key_low);					// create the lower iterator pointing on the first key of the neuron n
 	Link::iterator itup = links.upper_bound(key_up);					// creating the upper iterator pointing on the first key of the next neuron (n+1)
 	// iterator on the map links to find all links that contains neuron n as a receiving neuron
 	for(std::map<std::pair<size_t, size_t>, double>::iterator it(itlow); it != itup and it->first.second < get_size(); ++it) {
@@ -202,11 +202,11 @@ std::vector<size_t> Network::update()
 	std::vector<size_t> firing_neurons(0);					// creation of a temporary vector to store firing neurons and to update them after the others
 	for (size_t i(0); i<get_size(); ++i) {
 		if(neurons[i].firing()) {
-			firing_neurons.push_back(i);					// pushes firing neurons into the temporary vector					
+			firing_neurons.push_back(i);					// pushes firing neurons into the temporary vector
 		}
 		else {
 			neurons[i].set_current(total_current(i));
-			neurons[i].equation();	
+			neurons[i].equation();
 		}
 	}
 	if(not firing_neurons.empty()) {								// the firing neurons are then updated
@@ -218,15 +218,15 @@ std::vector<size_t> Network::update()
 void Network::print_parameters(std::ostream *outstr)
 {
     // Print of the header
-    *outstr << "Type" << "\t" 
-		    << "a" << "\t" << "b" << "\t" << "c" << "\t" << "d" << "\t" 
-		    << "Inhibitory" << "\t" << "degree" << "\t" << "valence" 
+    *outstr << "Type" << "\t" << "\t"
+		    << "a" << "\t" << "\t" << "\t" << "b" << "\t" << "\t"<< "\t" << "c" << "\t" << "\t" << "\t"<< "d" << "\t" << "\t"
+		    << "Inhibitory" << "\t" << "\t"<< "degree" << "\t" << "\t"<< "valence"
 		    << std::endl;
     for (size_t i(0); i<get_size(); ++i) {
 		  // Print the parameters
 		  *outstr << neurons[i].params_to_print()
-		  << "\t" << find_neighbours(i).size()
-		  << "\t" << valence(i)
+		  << "\t" << "\t"<< "\t"<< find_neighbours(i).size()
+		  << "\t"  << "\t"<< "\t"<< valence(i)
 		  << std::endl;
       }
 }
@@ -249,9 +249,9 @@ void Network::print_properties(const std::string& type, std::ostream *outstr)
 void Network::header_sample(std::ostream *outstr)
 {
 	for (const auto& type : types_proportions){
-		  if(not (type.second == 0.0)) *outstr << "\t" << type.first<< ".v" 
-											   << "\t" << type.first << ".u" 
-											   << "\t" << type.first << ".I";
+		  if(not (type.second == 0.0)) *outstr <<"               " << type.first<< ".v"
+											   << "               "<< type.first << ".u"
+											   << "               "<< type.first << ".I";
 	  }
       *outstr << std::endl;
 }
