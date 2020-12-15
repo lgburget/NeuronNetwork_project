@@ -34,17 +34,17 @@ std::string Neuron::params_to_print() const
 {
 	std::stringstream ss;
 	ss << n_type
-	   << "\t" << "\t"<< params_.a
-	   << "\t" << "\t" << params_.b
-	   << "\t" << "\t"<< params_.c
-	   << "\t" << "\t" << params_.d
-	   << "\t" << "\t" << (int)params_.excit;									// returns 1 if true and 0 if false.
+	   << "\t" << params_.a
+	   << "\t" << params_.b
+	   << "\t" << params_.c
+	   << "\t" << params_.d
+	   << "\t" << (int)params_.excit;									// returns 1 if true and 0 if false.
 	return ss.str();
 }
 
 std::string Neuron::variables_to_print() const
 {
 	std::stringstream ss;
-	ss << "           " << pot_  << "           "<< rec_ << "           "<< curr_;
+	ss << "\t" << pot_  << "\t" << rec_ << "\t" << curr_;
 	return ss.str();
 }

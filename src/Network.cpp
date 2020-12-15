@@ -218,15 +218,15 @@ std::vector<size_t> Network::update()
 void Network::print_parameters(std::ostream *outstr)
 {
     // Print of the header
-    *outstr << "Type" << "\t" << "\t"
-		    << "a" << "\t" << "\t" << "\t" << "b" << "\t" << "\t"<< "\t" << "c" << "\t" << "\t" << "\t"<< "d" << "\t" << "\t"
-		    << "Inhibitory" << "\t" << "\t"<< "degree" << "\t" << "\t"<< "valence"
+    *outstr << "Type" << "\t"
+		    << "a" << "\t" << "b" << "\t" << "c" << "\t" << "d" << "\t" 
+		    << "Inhibitory" << "\t" << "degree" << "\t" << "valence"
 		    << std::endl;
     for (size_t i(0); i<get_size(); ++i) {
 		  // Print the parameters
 		  *outstr << neurons[i].params_to_print()
-		  << "\t" << "\t"<< "\t"<< find_neighbours(i).size()
-		  << "\t"  << "\t"<< "\t"<< valence(i)
+		  << "\t" << find_neighbours(i).size()
+		  << "\t" << valence(i)
 		  << std::endl;
       }
 }
@@ -249,9 +249,9 @@ void Network::print_properties(const std::string& type, std::ostream *outstr)
 void Network::header_sample(std::ostream *outstr)
 {
 	for (const auto& type : types_proportions){
-		  if(not (type.second == 0.0)) *outstr <<"               " << type.first<< ".v"
-											   << "               "<< type.first << ".u"
-											   << "               "<< type.first << ".I";
+		  if(not (type.second == 0.0)) *outstr << "\t" << type.first<< ".v"
+											   << "\t" << type.first << ".u"
+											   << "\t" << type.first << ".I";
 	  }
       *outstr << std::endl;
 }
