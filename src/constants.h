@@ -38,10 +38,9 @@ _SIMULERR_(OUTPUT_ERROR, 30)
 #undef _SIMULERR_
 
 /// * default parameter values *
-#define _Numbers_ 15.
+#define _Numbers_ 500.
 #define _Delta_ 0.1
-#define _Simulation_Time_ 30.
+#define _Simulation_Time_ 200.
 #define _Connectivity_ 30.
-#define _Intensity_ 25.
-#define _Delta_T_ 0.5
+#define _Intensity_ 20.
 #define _Discharge_Threshold_ 30
