@@ -184,11 +184,11 @@ TEST(Network, update) {
 	double max_ex_pot = net.get_potential(0);
 	double min_ex_pot = net.get_potential(0);
 	
-	max_ex_pot += _Delta_T_*(0.04*max_ex_pot*max_ex_pot+5*max_ex_pot+140-net.get_recovery(0) + max_expected_current);
-	max_ex_pot += _Delta_T_*(0.04*max_ex_pot*max_ex_pot+5*max_ex_pot+140-net.get_recovery(0) + max_expected_current);
+	max_ex_pot += 0.5*(0.04*max_ex_pot*max_ex_pot+5*max_ex_pot+140-net.get_recovery(0) + max_expected_current);
+	max_ex_pot += 0.5*(0.04*max_ex_pot*max_ex_pot+5*max_ex_pot+140-net.get_recovery(0) + max_expected_current);
 	
-	min_ex_pot += _Delta_T_*(0.04*min_ex_pot*min_ex_pot+5*min_ex_pot+140-net.get_recovery(0) + min_expected_current);
-	min_ex_pot += _Delta_T_*(0.04*min_ex_pot*min_ex_pot+5*min_ex_pot+140-net.get_recovery(0) + min_expected_current);
+	min_ex_pot += 0.5*(0.04*min_ex_pot*min_ex_pot+5*min_ex_pot+140-net.get_recovery(0) + min_expected_current);
+	min_ex_pot += 0.5*(0.04*min_ex_pot*min_ex_pot+5*min_ex_pot+140-net.get_recovery(0) + min_expected_current);
 	
 	net.update();
 	EXPECT_LT(min_ex_pot, net.get_potential(0));
