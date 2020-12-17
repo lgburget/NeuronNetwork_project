@@ -3,7 +3,9 @@
 ## Overview
 
 This project aims to model a neuron network by simulating connections and interactions between neurons. 
+
 A network is made of a set of neurons, which create random connections. 
+
 The program allows to create different types of neurons, which have differents and fixed cellular parameters. There are five types of neurons, distributed into two categories:
 * inhibitory neurons: FS and LTS
 * excitatory neurons: RS, CH and IB
@@ -12,12 +14,14 @@ Moreover, each neuron has differents properties:
 * The membrane potential
 * The recovery time
 * The synaptic current
+
 Each of these three properties evolves with time.
 
 ## Goal of the program
 
 The final aim of this program is to spot **firing** neurons. 
 A neuron is **firing** when its membrane potential is more than the discharge threshold, which is 30 mV. 
+
 At each step of the simulation, the program will make the neurone evolve and check which neurons are firing. 
 The output file will contain the list of firing neurons at each time step.
 
@@ -61,7 +65,7 @@ In order to run the program, you have to provide some parameters to configure yo
 * the **average intensity of connection** between two random neurons (-l)
 * the **dispersion model** for number of connection (-M)
 * the **proportion of each type of neurons** within the network (-T)
-* the length of the **interval for neuron parameters** to be picked at random in (-d)
+* the **interval of noises for neuron parameters** to be picked at random in (-d)
 * the **names of the three files** in which the results will be printed (-o, -s, -p)
 
 If you don't specify these arguments when you run the program, default parameters will be taken into account. The default parameters are:
@@ -71,7 +75,7 @@ If you don't specify these arguments when you run the program, default parameter
 * l = 20 
 * M = poisson distribution
 * T = 50% RS, 50% FS
-* d = parameters value +/- 0.1
+* d = 0.1
 * o = outfile.txt
 * s = sample_file.txt
 * p = param_file.txt
@@ -103,7 +107,9 @@ For example, a typical command is:
 ```
 ./NeuronNetwork -n 5000 -t 1000 -c 70 -l 5 -T 'FS:0.2,CH:0.2'
 ```
-This create a network of 5000 neurons, an average of 70 connections per neurons with an average intensity of 5. 20% of neurons are FS, 20% are CH and the rest (60%) are RS neurons. There are 1000 simulation time steps. 
+This creates a network of 5000 neurons, with an average of 70 connections per neurons and an average intensity of 5. 20% of neurons are FS, 20% are CH and the rest (60%) are RS neurons. There will be 1000 simulation time steps. 
+
+The other unspecified parameters take therefore the values of default parameters. 
 
 ## Results
 
@@ -123,10 +129,9 @@ To do that, upload the program into the folder `build` and type:
 Rscript RasterPlots.R outfile.txt sample_file.txt param_file.txt
 ``` 
 with the names of your three output files (here the default names). This will generate three PDF files. 
-
-The first one contains the raster plot. The dark points spots the firing neurons. 
-The second ones contains graphics representing evolution of potentiel, recovery and current for the sample of neuron of `sample_file.txt`. 
-The third one contains the values of parameters for each neurons of the network, as listed in `param_file.txt`.
+* The first one contains the raster plot. The dark points spots the firing neurons. 
+* The second ones contains graphics representing evolution of potentiel, recovery and current for the sample of neuron of `sample_file.txt`. 
+* The third one contains the values of parameters for each neurons of the network, as listed in `param_file.txt`.
 
 ## Generate doxygen documentation
 
