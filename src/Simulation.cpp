@@ -11,7 +11,7 @@ Simulation::Simulation(int argc, char **argv)
      try {
 		// get the parameter in the command line
         TCLAP::CmdLine cmd("Neuron Network simulation");
-        TCLAP::ValueArg<size_t> neuron("n", "number", "Number of Neuron", false, _Numbers_ , "size_t");
+        TCLAP::ValueArg<int> neuron("n", "number", "Number of Neuron", false, _Numbers_ , "int");
         cmd.add(neuron);
         TCLAP::ValueArg<std::string> types("T", "types", "Proportions of each type", false, "", "string");
         cmd.add(types);
@@ -83,7 +83,7 @@ void Simulation::run()
 		*outstr_print << std::endl;
 		network->print_sample(t, outstr_sample);
 	}
- 
+
 	// the output files are closed
 	if (outfile.is_open()) outfile.close();
 	if (samplefile.is_open()) samplefile.close();
