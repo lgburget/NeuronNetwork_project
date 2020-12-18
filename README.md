@@ -32,8 +32,6 @@ In order to use this program, you need to have these packages:
 * Doxygen 
 * TCLAP
 
-Moreover, the `RasterPlots.R` program will be usefull to transform the results of this program into graphical representations.
-
 ## Build and run 
 
 ### Step 1: Clone the repository
@@ -46,9 +44,8 @@ cd team_21
 
 ### Step 2: Build the project
 
-Create a build folder to run the program, then launch the commande 'cmake ..' and 'make' to build the program.
+Go into the build folder to run the program, then launch the commande 'cmake ..' and 'make' to build the program.
 ```
-mkdir build
 cd build
 cmake ..
 make
@@ -124,7 +121,7 @@ By running the program, three output files are generated.
 
 In order to make these results more meaningfull, you can then use the `RasterPlots.R` program to transform the output files into graphics. 
 
-To do that, upload the program into the folder `build` and type:
+To do that, make sure you are in the folder `build` and type:
 ```
 Rscript RasterPlots.R outfile.txt sample_file.txt param_file.txt
 ``` 
