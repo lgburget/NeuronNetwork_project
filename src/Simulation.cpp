@@ -66,9 +66,9 @@ Simulation::Simulation(int argc, char **argv)
 void Simulation::run()
 {
 	// this will be called once, at the beginning of the simulation
-	std::ostream *outstr_param;
-	std::ostream *outstr_sample;
-	std::ostream *outstr_print;
+	std::ostream *outstr_param=nullptr;
+	std::ostream *outstr_sample=nullptr;
+	std::ostream *outstr_print=nullptr;
     if (paramfile.is_open()) outstr_param = &paramfile;
     if (samplefile.is_open()) outstr_sample = &samplefile;
     if (outfile.is_open()) outstr_print = &outfile;
