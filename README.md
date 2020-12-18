@@ -141,5 +141,10 @@ make doc
 ```
 This will create a folder `doc` in which html files are generated. Just click on one of these files to open documentation. You can then navigate between the different classes to discover the program conception.
 
+## Test the programm 
 
+To verify that the program works correctly, you can run the tests with the command:
+```
+./testNeuronNetwork
+```
 
